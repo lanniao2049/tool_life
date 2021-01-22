@@ -1,0 +1,79 @@
+# git常用命令 #
+- git --version，查看版本
+- git init,初始化
+- git add .，添加变化文件到暂存区
+- git commit -m 'add file'，提交
+- git status，查看状态
+- git log，查看历史
+- git log --author='lanniao'，仅查看指定用户的历史
+- git config user.name 'lanniao2049'
+- git config user.email 'xxx@163.com'
+- git config --global user.name 'xxx'，设置全局名称
+- git config --global user.email 'xx@163.com'，设置全局邮箱(优先级别：项目设置优先于系统设置；两者都存在使用项目设置；只有系统设置，则使用系统设置；两者都没有设置则不允许)
+- git config --global --list，列出全局属性
+- git config --list,列出当前git仓库的信息
+- git config --global user.name
+- git config --global user.email
+- git config user.name
+- git config user.email
+- git config 查看 git config 的相关命令
+- git rm xx.txt，删除指定文件
+- git mv old.txt newfile.txt，重命名文件
+- git log 查看日志
+- git log --pretty=oneline home/txt.txt，简化显示某个文件
+- git log --pretty=oneline,简化显示日志
+- git log --oneline，一行显示日志
+- git reflog
+- git show id（版本id），展示指定版本
+- git checkout -- xx.txt 还原上传提交的代码，仅对没有提交到暂存区
+- git reset HEAD xxx.txt 取消追踪，然后再使用git checkout命令还原上传提交的代码，仅对提交到暂存区
+- git reset --hard HEAD^ 回退到前一个版本
+- git reset --hard HEAD^^ 回退到前两个版本
+- git reset --hard xxid 回退到指定的版本
+- git checkout xxid -- xxx.txt 回退到指定版本的指定文件
+- git tag v1.0，设置标签
+- git tag，查看标签
+- git tag v0.5 xxid，设置指定版本为标签
+- git tag -d v0.5，删除指定标签
+- git push origin v1.0，推送标签到远程库
+- git branch xxname，建立分支
+- git branch ，查看分支
+- git checkout xxname，切换分支
+- git branch -d xxname，删除分支
+- git checkout -b test，创建并切换分支
+- git merge dev，dev合并到该分支
+- git log --oneline --graph，查看分支路线
+- git log --graph --pretty=oneline
+- git push origin --delete xxname，删除远程分支
+- git branch -av，查看远程分支
+- git remote -v
+- git remote add origin(别名) git……(远程git地址)
+- git push origin -u master ,第一次推送
+- git push origin master,本地master分支推送到origin
+- git status 
+- git status -s
+- git status --short
+- git clone git@github.com:renyuns/gitskills.git，克隆远程仓库
+- git remote add origin git@xxxxx:abc/IMserver.git
+- git remote rm origin 删除已关联的远程库 origin
+- git pull origin code_standards:dev(远程分支：本地分支)
+- git pull origin develop       从远程(origin) 的 develop 分支拉取代码
+- git checkout -b dev origin/code_standards
+- git branch --set-upstream-to origin/code_standards(远程分支) master(本地分支)，设置本地分支关联到远程的分支
+- 使用git bash登录设置ssh登录，使用命令 ssh-keygen -t rsa -C "xxxx@163.com"(三次默认都不输入密码)，生成的id_rsa.pub内容添加到服务端gitlab或者github中的ssh keys中
+- 合并分支（本地master合并到bugfix，然后在push到远程bugfix分支）
+	- git checkout master,切换master分支
+	- git pull origin master,同步远程最新的代码
+	- git checkout bugfix,切换bugfix分支
+	- git rebase master,把master分支最新commit到bugfix分支
+	- git push origin bugfix，把现在的代码push到远端的bugfix分支上
+## git的快捷键 ##
+- Ctrl+D， 本地分支和远程库代码比较
+- Ctrl+K commit，提交
+- Ctrl+Shift+K push，远程推送
+
+### github ###
+- github快捷键
+	- Shitf+? 查询相关快捷键
+	- t 查询代码
+- github搭建个人网站
