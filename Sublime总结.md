@@ -50,9 +50,33 @@ ___
    ```
     "channels": [ "http://packagecontrol.cn/channel_v3.json"]
    ```
+   
+ - 通过 **Preferences > Package Settings > Package Control > Settings User**，查看全部配置信息(包含插件安装)
+ ```
+ {
+	"bootstrapped": true,
+	"channels":
+	[
+		"http://packagecontrol.cn/channel_v3.json"
+	],
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"ChineseLocalizations",
+		"Dartlight",
+		"DocBlockr",
+		"DocBlockr_Python",
+		"Emmet",
+		"Markdown Extended",
+		"Package Control"
+	]
+}
+ ```
 
 
 #### 参考资料：
-   慕课网教程(http://www.imooc.com/wiki/sublime)
-   官网教程(http://www.sublimetext.cn/docs/3/index.html)
-   Github资料(https://github.com/jikeytang/sublime-text)
+   慕课网教程(http://www.imooc.com/wiki/sublime)      
+   官网教程(http://www.sublimetext.cn/docs/3/index.html)    
+   Github资料(https://github.com/jikeytang/sublime-text)  
