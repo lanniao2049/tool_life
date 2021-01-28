@@ -51,7 +51,7 @@ ___
     "channels": [ "http://packagecontrol.cn/channel_v3.json"]
    ```
    
- - 通过 **Preferences > Package Settings > Package Control > Settings User**，查看全部配置信息(包含插件安装)
+  - 通过 **Preferences > Package Settings > Package Control > Settings User**，查看全部配置信息(包含插件安装)
  ```
  {
 	"bootstrapped": true,
