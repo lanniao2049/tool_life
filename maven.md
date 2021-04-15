@@ -21,6 +21,14 @@
 		- deploy site，将站点信息发布到远程库
 	
 - dependency的scope依赖范围(compile默认,test,provided,runtime,system)
-
+- maven向本地仓库导入官方仓库没有的jar包(例如小米手机的最新api没有在maven仓库中),遇到该问题怎么解决
+	- 在cmd命令中执行`mvn install:install-file -Dfile=C:\Users\Administrator\Desktop\lib\xmpush-server-api-http2-1.0.11.jar -DgroupId=com.xiaomi.miliao -DartifactId=xmpush-server-api-http2 -Dversion=1.0.11 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true`
+	- 以上命令说明
+		- -Dfile=jar的所在位置
+		- -DgroupId=包名
+		- -DartifactId=项目名
+		- -Dversion=版本号
+		- -Dpackaging=jar
+	
 ## maven私服nexus搭建 ##
 ## maven如何创建archtype ##
