@@ -1,0 +1,429 @@
+﻿
+ipconfig
+ip addr
+cat /etc/sysconfig/network-script/ifcfg-io 
+yum install net-tools
+
+Tab键 是自动补全功能
+
+service network restart
+
+查看操作系统版本
+cat /etc/redhat-release
+
+替换默认源
+查看默认源地址
+cat /etc/yum.repos.d/CentOS-Base.repo
+
+备份 CentOS-Base.repo文件
+
+在/etc/yum.repos.d目录下载CentOS7 指定文件
+weget http://mirrors.163.com/.help/CentOS7-Base-163.repo
+
+最后执行命令
+yum install all
+yum makecache
+
+
+安装vim
+yum install vim
+
+ssh  (secure shell)
+
+查看是否安装ssh
+yum list|grep openssh-server
+安装ssh
+yum install openssh-server
+启动
+service sshd start
+设置开局运行
+chkconfig sshd on
+查看状态
+service sshd status
+
+查看是否安装ssh 客户端
+yum list|grep openssh-client
+
+使用ssh连接其他的服务器
+ssh lanniao@101.43.186.60  用户@ip
+
+在linux上的ssh中config高级应用
+	~/.ssh/
+	touch config
+	config 的配置
+----
+host "root"
+    HostName 101.43.186.60
+    User root
+    Port 22
+
+host "mysql"
+    HostName 101.43.186.60
+    User mysql
+    Port 22	
+---
+ 如果出现Bad owner or permissions on /home/lanniao/.ssh/config 错误，需要执行
+	chmod 600 config
+	
+ 待配置完毕后不用使用ssh root@101.43.186.60 直接使用ssh root 	
+	
+	
+ssh 免登陆高级应用
+私钥存在本地.ssh/下
+公钥存在服务器.ssh/authorized_keys中
+在~/.ssh/目录下创建 authorized_keys文件
+touch authorized_keys 
+
+生成公钥(必须在.ssh目录下)
+ssh-keygen -t rsa
+
+将生成的公钥添加到authorized_keys里面
+
+加载生成的私钥
+ssh-agent bash
+ssh-add git
+
+linux新创建的用户需要重新登录一次root才有可能生成.ssh目录
+
+查看或者修改ssh的默认端口
+/etc/ssh/sshd-config
+
+
+yum install xx
+yum remove xxx
+yum search xx
+yum clear packages
+yum list 
+yum info xx
+
+
+free -m 
+free -h 
+df -h 
+w/top 查看负载
+16:07:56 up 13 days, 28 min,  1 user,  load average: 0.03, 0.04, 0.05
+	其中load average 分别表示最近1,5,15分钟的平均负载情况，轻重监控的是0.6-0.7，1.0表示已经满载，1.0以上表示超载随时有可能宕机
+
+cat /proc/cpuinfo  查看cpu
+
+fdisk 格式化
+ls
+touch
+mkdir
+mkdir -p imooc/good
+rm -rf imooc 
+cd
+
+vim 常用命令
+i
+gg
+GG
+yy 复制
+p 粘贴
+dd 删除行
+
+文件权限
+rwx 权限为 4,2,1
+
+文件搜索
+tail  文件尾部
+head
+cat 
+more 
+grep  关键字 
+grep "11" test.txt
+grep -n "11" test.txt 
+find  搜索文件
+wc 统计个数
+find . -name ""
+find . -type f  文件
+find . -type d 
+find . -ctime +20
+find . -type f -mtime +7 -ok rm {} \;
+find . -type f -perm 600 exec ls -l {} \;
+
+tar -cvf imooc.tar imooc
+	c表示创建
+	v表示显示
+	f表示file
+tar -xvf imooc.tar 
+	x表示抽取
+tar -czvf imooc.tar.gz imooc
+tar -xzvf imooc.tar.gz 
+
+
+系统用户命令
+
+useradd
+adduser
+userdel
+userdel -r imooc
+passwd	
+
+防火墙
+yum install firewalld
+service firewalld start 
+service firewalld status
+service firewalld stop/disable
+	
+ps -ef|grep firewall
+firewall-cmd --version 查看版本
+firewall-cmd --help 
+
+提权操作
+sudo yum install firewalld
+如果没有权限，需要使用root用户执行visudo
+添加
+%lanniao ALL=(ALL)       ALL
+
+
+文件下载
+wget 
+wget http://www.baidu.com 
+curl
+curl -o baidu.html http://www.baidu.com
+
+文件上传
+scp text.txt imooc@101.43.186.60:/home/lanniao/test  从本地上传到服务
+scp imooc@101.43.186.60:/home/lanniao/text.txt ./temp 从服务下载到本地
+
+Apache基本操作(使用sudo 提权操作)
+yum install httpd
+service httpd status 
+service httpd start/top/restart/reload
+ps -ef|grep httpd 
+
+sudo netstat -anpl| grep "httpd"
+
+firewall-cmd --add-port=80/tcp
+sudo firewall-cmd --add-port=80/tcp
+
+centenos 安装mysql
+删除mariadb
+yum remove mariadb-libs.x86_64
+下载Mysql源
+http://dev.mysql.com/dowanlod/repo/yum
+进入mysql官网下载指定操作系统对应的mysql版本
+获取并复制下载地址
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-server-8.0.28-1.el7.x86_64.rpm
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client-plugins-8.0.28-1.el7.x86_64.rpm
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-libs-8.0.28-1.el7.x86_64.rpm
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-client-8.0.28-1.el7.x86_64.rpm
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-common-8.0.28-1.el7.x86_64.rpm
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-community-icu-data-files-8.0.28-1.el7.x86_64.rpm
+安装源
+sudo yum localinstall mysql-community-client-plugins-8.0.28-1.el7.x86_64.rpm
+sudo yum localinstall mysql-community-libs-8.0.28-1.el7.x86_64.rpm
+sudo yum localinstall mysql-community-client-8.0.28-1.el7.x86_64.rpm
+sudo yum localinstall mysql-community-icu-data-files-8.0.28-1.el7.x86_64.rpm
+sudo yum localinstall mysql-community-common-8.0.28-1.el7.x86_64.rpm
+sudo yum localinstall mysql-community-server-8.0.28-1.el7.x86_64.rpm
+安装mysql 
+yum list|grep mysql-community 或者yum search mysql 查找本地mysql对应的信息 
+yum install mysql-community-server
+
+ps -ef|grep mysql 
+
+sudo service mysqld start 
+service mysqld status 
+默认密码(初次)
+cat /var/log/mysqld.log|grep password
+
+mysql -uroot -p
+
+mysql -uroot -h127.0.0.1 -p 
+
+mysql的基本命令
+show tables;
+show databases;
+出现ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement
+ 
+修改密码
+alter user user() identified by "Lanniao2049@"; 
+出现ERROR 1819 (HY000): Your password does not satisfy the current policy requirements
+set global validate_password_policy=0;
+
+查看密码策略
+SHOW VARIABLES LIKE 'validate_password%';
+
+show databases;
+use mysql;
+show tables;
+select * from user \G;
+保证其他的外部可以访问mysql服务
+update user set host='%' where host='localhost' and user='root';
+刷新权限
+flush privileges;
+
+navicat for mysql 连接时报错：1251-Client does not support authentication protocol requested by server(客户端连接mysql8.0以上版)
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'Lanniao2049@';
+
+查看mysql插件信息
+select host,user,plugin from user;
+
+开启genelog
+
+set global general_log_file="/tmp/aa.log";
+set global general_log=on;
+set globla general_log=off;
+
+创建用户
+create user 'lanniao'@'%' identified by 'Lanniao2049@';
+
+授权
+grant all privileges on *.* to 'lanniao'@'%';
+
+grant select,insert,update on *.* to 'lanniao'@'%' identified by 'Lanniao2049@' with grant option;
+
+revoke all privileges on *.* from lanniao;
+flush privileges;
+
+
+################################################################
+swap 交互分区，建议是设置内存的2倍
+设置boot挂载点(系统启动挂载点)
+挂载点/boot 文件系统类型 ext4 大小200M
+
+查看当前用户
+whoami
+挂在类型：
+	自动挂载，初始安装的操作系统
+	手动挂载，后续添加的磁盘文件
+根目录
+/bin 
+	binary 许多指令对应的可执行文件目录
+/sbin
+	super binary  root对应的可执行指令
+/usr
+	unix system resource(unix 系统资源文件目录)
+	类似win系统c:/Program file目录
+/usr/bin 
+/usr/sbin 	
+
+/dev 
+	device 系统设备硬件
+	/dev/cdrom 光驱
+
+/home
+	家目录(普通用户)
+/root 
+	root家目录
+	
+/proc 
+	内存映射目录
+/var 
+	variable 可变，易变
+/boot 
+	系统启动核心目录，用于存储系统启动核心文件
+
+/etc
+	系统主要配置目录
+
+/lib 
+	library
+	系统资源文件类库目录
+
+
+常见命令
+which ls 
+which pwd
+which init
+
+~ 家目录 
+# 表示root用户
+$ 表示普通用户
+
+mkdir test
+mkdir -p test/test 
+
+mv test test1
+
+cp test test.bak 
+
+rm -rf test 
+   r(recursive 递归)
+   f(force)
+
+查看文件
+	more "enter"键向下，不支持回看
+	less	支持前后左右查看
+	tail -n 查看后n行数据
+	head -n 查看前n行数据
+	cat 
+	wc file  行数，句子，字节大小
+	
+	
+touch aa.txt 
+
+echo "this is test" > aa.txt 
+echo "hello world" >> aa.txt 
+
+用户和组的操作
+useradd lanniao
+
+useradd -g gid组名编号 username 
+	例如：
+		useradd -g 1004 git1
+		useradd -g 1004 git2
+
+useradd -g 1004 -d /home/git3 git3 
+
+userdel lanniao
+userdel -rf lanniao 
+
+usermod 
+	usermod -g 1005 git1
+	
+设置密码
+passwd git 
+	
+cat /etc/passwd 
+
+groupaddd git 
+
+groupdel git 
+
+groupmod 
+	groupmod -g 1005 git 
+cat /etc/group 
+
+vim命令
+	i:
+	:q
+	:q!
+	:wq
+	:wq!
+	:set number
+	:set nu 
+	:/good/
+	
+	:n 
+	:N 
+	:j 向下
+	:k 向上
+	:h 向左
+	:l 向右
+	:w 下一个单词移动首部
+	:e 下一个单词移动尾部
+	:b 上一次
+	:0
+	:$
+	:数字  调整到行
+	:%s/contr/contr1/ 所有替换
+	:s/cont/tcon1/g 当前行替换
+	:gg 
+	:GG 
+	:yy
+	:2yy
+	:p
+	:dd 
+	:2dd
+	:x
+	
+	:u undo 撤销
+	:j 合并上下两行
+	
+	:r 替换单个字符
+	
+	
+	
