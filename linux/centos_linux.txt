@@ -425,5 +425,87 @@ vim命令
 	
 	:r 替换单个字符
 	
+权限：
+	chmod u+wr,g-x,o+r 1.txt 
+		u 主用户，g 同组,o 其他组
+	chmod +wrx 1.txt 给文件全部权限
+	chmod -x 1.txt 
 	
+	chmod 755 1.txt 
+	chmod 741 1.txt 
+	
+	>out.sh 会从系统命令查找
+	>./out.sh 是从当前目录里面查找该脚本
+	
+	强制修改
+	1.txt -wxrx-rx-  该文件有些权限没有读权限再次修改新的内容会覆盖旧的内容
+	
+du -h test
+grep good 1.txt 
+which init 
+date
+ps -A 
+df -lh 
+ 	
+管道p（pipe）
+	ls -l |wc 
+	ls -l |head -10
+	ls -l |tail -20|head -2
+	
+文件查找
+	find . -name 1.txt 
+	find . -type f 
+	find / -name 2.txt 
+	find / -maxdepth 4 -name 3.txt 
+	find / -mindepth 2 -name 4.txt 
+	
+		maxdepth 最深目录层数
+		mindepth 最小目录层数
+	find . -size +10M -name *.log 
+	find . -size -10M *.log 
+	find . -size 2M *.log 
+	find . -size 12c  
+		c 表示字节,k,M 
+	find . -name "g*"
+	find . -perm 777
+
+软链接
+	类似window的快捷方式
+	
+	设置软链接
+	ln -s 源文件 软链接(soft) 
+		例如：ln -s 1.txt 1
+	ln -s /home/lanniao/1.txt /home/mysql/1 源文件和软链接不在同一目录源文件必须绝对路径
+	软链接记录的就是个地址，如果源文件删除，则软链接无效
+	
+	
+硬链接	
+	ls -li  文件的索引号码（i inode）
+	ls -lai 全部文件包含隐藏
+	ln -d 源文件 硬链接  源文件不需要绝对类型
+	ln -d 1.txt 1
+	ln 1.txt 1 （默认硬链接）
+	
+	655402 drwxrwxr-x 3 lanniao lanniao 4096 Feb 16 20:20 redis
+	目录也有硬链接数个，上面的3就是链接数目
+		如何理解目录的硬链接数量
+		redis 
+			.
+				config/..
+	
+	硬链接文件 修改则全部修改 并且索引一致
+	
+	只有普通文件可以设置硬链接，目录不可以
+	硬链接文件必须同一硬盘，同一分区
+	
+	有点：
+		重要文件多个备份，防止删除
+		多个人可以操作同一文件，直接给硬链接
+	
+软链接和硬链接的异同
+		软链接类似快捷方式
+		硬链接就是文件名，一个文件的许多命名可以互为硬链接
+		
+		相同
+			都是对同一目标的操作
 	
