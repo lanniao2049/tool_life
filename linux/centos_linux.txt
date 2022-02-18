@@ -509,3 +509,23 @@ df -lh
 		相同
 			都是对同一目标的操作
 	
+	
+调度任务
+		crontab -l 查看任务调度指令
+		crontab -e 编辑任务调度指令
+		
+		分钟 时 日 月 星期 指令
+		37 23 1 8 1 /home/lanniao/out.sh 
+		20 20 * * * /home/lanniao/out.sh
+		45 20,21,22 *** /home/lanniao/out.sh
+		
+文件主人，组设备		
+	
+	chown git 1.txt  (修改主人名称)
+	chown .git 1.txt (修改组名，其中.表示占位符)
+	chown git.git 1.txt 
+	chown lanniao.lanniao test
+	chown lanniao test 
+	chown .lanniao test 
+	chown -R lanniao test （目录及下全部归属修改）
+	chown -R mysql.mysql test
