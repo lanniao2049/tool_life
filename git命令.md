@@ -48,7 +48,7 @@
 - git branch -av，查看远程分支
 - git remote -v
 - git remote add origin(别名) git……(远程git地址)
-- git push origin -u master ,第一次推送
+- git push -u origin master ,第一次推送
 - git push origin master,本地master分支推送到origin
 - git status 
 - git status -s
@@ -67,10 +67,23 @@
 	- git checkout bugfix,切换bugfix分支
 	- git rebase master,把master分支最新commit到bugfix分支
 	- git push origin bugfix，把现在的代码push到远端的bugfix分支上
-## git的快捷键 ##
+## 在IDEA开发工具中git的快捷键 ##
 - Ctrl+D， 本地分支和远程库代码比较
 - Ctrl+K commit，提交
 - Ctrl+Shift+K push，远程推送
+## 在IDEA开发工具中git的使用 ##
+- 在创建新项目中创建git
+- 在创建git项目中创建忽略文件.gitignore
+- 在创建git项目中创建新的分支
+- 切换分支
+- 合并分支，(建议使用merge，不要使用accept your/accept their)
+- git clone 远程项目到IDEA工具中
+- 推送项目到远程库指定分库
+## git其他 ##
+- 使用github库clone下载项目很慢如何解决？
+	- 先将github对应的项目转存到国内码云库上，然后在从码云库上clone该项目
+	- 如果还想是用在码云库上clone下的项目push到github上，则需要修改.git/config中的远程连接
+
 
 ### github ###
 - github快捷键

@@ -1,0 +1,26 @@
+加载文件使用的方式：
+	绝对路径和相对路径不靠谱
+	类加载路径和 serveltcontext getrelpath靠谱
+
+在使用mybatis之前使用的模式
+构建者模式
+
+
+工厂模式
+
+代理模式
+
+hibernate 消除sql,无法定制sql,hql语言学习成本打，字段全映射
+
+
+javaBean----------->   编写sql->预编译-》设置参数——》执行sql-》封装结果
+
+javaBean----------->   编写sql ，开发人员自己设置（配置文件），半自动化
+
+
+优点：
+	sql可以定制，优化，半自动 化
+	映射结果可以定制，不用全部映射
+	只用了解sql就可以，不用在学习hql,学习成本低、
+	
+connetcion,sqlsession.opensession 都只能使用一次，线程非安全的	

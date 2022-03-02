@@ -1,0 +1,248 @@
+1.查询是否安装mysql的命令是
+rpm -qa|grep -i mysql
+2.强制删除冲突的自定义的mysql包
+[root@app01 mysql]#yum -y remove mysql-libs-5.1.71-1.el6*
+
+[root@app01 mysql]#rpm -ivh MySQL-server-5.5.62-1.el6.x86_64.rpm 
+warning: MySQL-server-5.5.62-1.el6.x86_64.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY
+Preparing...                ########################################### [100%]
+   1:MySQL-server           ########################################### [100%]
+warning: user mysql does not exist - using root
+warning: group mysql does not exist - using root
+191230  3:06:41 [Note] Ignoring --secure-file-priv value as server is running with --bootstrap.
+191230  3:06:41 [Note] /usr/sbin/mysqld (mysqld 5.5.62) starting as process 4424 ...
+191230  3:06:41 [Note] Ignoring --secure-file-priv value as server is running with --bootstrap.
+191230  3:06:41 [Note] /usr/sbin/mysqld (mysqld 5.5.62) starting as process 4431 ...
+
+PLEASE REMEMBER TO SET A PASSWORD FOR THE MySQL root USER !
+To do so, start the server, then issue the following commands:
+
+/usr/bin/mysqladmin -u root password 'new-password'
+/usr/bin/mysqladmin -u root -h app01 password 'new-password'
+
+Alternatively you can run:
+/usr/bin/mysql_secure_installation
+
+which will also give you the option of removing the test
+databases and anonymous user created by default.  This is
+strongly recommended for production servers.
+
+See the manual for more instructions.
+
+Please report any problems at http://bugs.mysql.com/
+#查看用户
+[root@app01 mysql]# cat /etc/passwd|grep mysql
+mysql:x:496:493:MySQL server:/var/lib/mysql:/bin/bash
+[root@app01 mysql]# cat /etc/group|grep mysql
+mysql:x:493:
+[root@app01 mysql]# mysqladmin --version
+[root@app01 dmadmin]# ps -ef|grep mysql
+root       4542      1  0 03:16 pts/1    00:00:00 /bin/sh /usr/bin/mysqld_safe --datadir=/var/lib/mysql --pid-file=/var/lib/mysql/app01.pid
+mysql      4628   4542  0 03:16 pts/1    00:00:00 /usr/sbin/mysqld --basedir=/usr --datadir=/var/lib/mysql --plugin-dir=/usr/lib64/mysql/plugin --user=mysql --log-error=app01.err --pid-file=/var/lib/mysql/app01.pid
+root       4666   4283  0 03:18 pts/1    00:00:00 grep mysql
+[root@app01 dmadmin]# service mysql stop
+Shutting down MySQL. SUCCESS! 
+[root@app01 dmadmin]# 
+[root@app01 ~]# /usr/bin/mysqladmin -u root password 'root'
+设置开机启动
+chkconfig mysql on
+#查看状态
+chkconfig --list|grep mysql
+安装路径
+/var/lib/mysql
+mysql配置目录
+/usr/share/mysql
+
+cat /etc/init.d/mysql 启动停止脚本
+将默认的my-huge.cnf复制到默认启动目录下
+[root@app01 mysql]# cp my-huge.cnf /etc/my.cnf
+查看默认编码
+mysql> show variables like '%character%';
++--------------------------+----------------------------+
+| Variable_name            | Value                      |
++--------------------------+----------------------------+
+| character_set_client     | utf8                       |
+| character_set_connection | utf8                       |
+| character_set_database   | latin1                     |
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8                       |
+| character_set_server     | latin1                     |
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ |
++--------------------------+----------------------------+
+8 rows in set (0.00 sec)
+
+修改数据库的默认字符集
+[client]
+#password       = your_password
+port            = 3306
+socket          = /var/lib/mysql/mysql.sock
+#set character
+default-character-set=utf8
+
+[mysqld]
+port            = 3306
+#set character
+character-set-server=utf8
+character-set-client=utf8
+collation-server=utf8_general_ci
+
+[mysql]
+no-auto-rehash
+#set character
+default-character-set=utf8
+
+
+#查看存储引擎
+show engines;
+show variables like '%storage_engine%';
+
+#joiin的七种理论
+#join的其中理论
+/*
+1.inner join
+2.left join
+3.right joion
+4.左表独有
+5.右表独有
+6.左右表全部
+7.左右表各自独有
+*/
+#笛卡尔积
+SELECT * FROM beauty,boys;
+#inner join,公共部分
+SELECT * FROM beauty g INNER JOIN boys b ON g.`boyfriend_id`=b.`id`;
+#left join，左表全部
+SELECT * FROM beauty g LEFT JOIN boys b ON g.`boyfriend_id`=b.`id`;
+#right join，右表全部
+SELECT * FROM beauty g RIGHT JOIN boys b ON g.`boyfriend_id`=b.`id`;
+#左表独有
+SELECT * FROM beauty g LEFT JOIN boys b ON g.`boyfriend_id`=b.`id` WHERE b.`id` IS NULL;
+#右表独有
+SELECT * FROM beauty g RIGHT JOIN boys b ON g.`boyfriend_id`=b.`id` WHERE g.`boyfriend_id` IS NULL;
+#左右全部
+SELECT * FROM beauty g LEFT JOIN boys b ON g.`boyfriend_id`=b.`id`
+UNION SELECT * FROM beauty g RIGHT JOIN boys b ON g.`boyfriend_id`=b.`id`;
+#左右各自独有
+SELECT * FROM beauty g LEFT JOIN boys b ON g.`boyfriend_id`=b.`id` WHERE b.`id` IS NULL
+UNION SELECT * FROM beauty g RIGHT JOIN boys b ON g.`boyfriend_id`=b.`id` WHERE g.`boyfriend_id` IS NULL;
+
+
+#索引
+/*
+索引本质就是排好序的快速查找的数据结构
+使用索引的优势和劣势
+	优势：
+	1.提高数据索引的效率，降低IO的成本
+	2.降低数据排序的成本，降低CPU的消耗
+	劣势：
+	1.索引是真实数据的指引数据结构，也占存储空间
+	2.索引虽然提高了数据的查询效率，但是也降低了数据的更新
+	操作，比如：在进行update,insert,delete操作时候，不仅进行了真实 
+	数据的更新操作，指向真实数据的索引也需要更新
+	3.索引是提高数据查询效率的一种手段，根据业务需求，最有索引也是在不断变化的。
+*/
+/*	
+索引的分类:
+   1.单值索引
+   2.组合索引
+   3.唯一索引
+其他索引：
+   主键索引
+   全文索引fulltext
+创建索引的语法
+create [unique] index idx_table_xx on table(a,b,c);
+alter table tablename add [unique] index idx_xx_xx(a,b,c);
+drop index idx_table_xx on table;
+show index from table;
+*/
+CREATE UNIQUE INDEX idx_beauty_idname ON beauty(id,NAME);
+SHOW INDEX FROM beauty;
+DROP INDEX idx_beauty_idname ON beauty;
+ALTER TABLE beauty ADD UNIQUE INDEX idx_beauty_idname(id,NAME);
+
+/*
+适用于创建索引
+ 1.主键自动创建索引
+ 2.频繁查询的创建索引
+ 3.与其他表相关联的，关联表字段创建索引
+ 4.频繁更新的字段，不创建索引
+ 5.where条件查询用不到的字符不创建索引
+ 6.单值索引组合索引？
+ 7.查询中的统计和分组
+不适用与创建索引
+ 1.数据量少
+ 2.频繁更新字段
+ 3.重复且分布均匀高的字段，如：性别，国籍
+*/
+#mysql常见的执行瓶颈
+/*
+ 1.CPU：CPU饱和一般发生在数据装入内存或者从磁盘上读取数据的时候
+ 2.I/O: I/O瓶颈在装入的数据大于内存的容量
+ 3.服务器硬件的性能：可以使用top,free,iostat,vmstat等命令查询服务器性能
+*/
+
+
+#执行计划explain
+SELECT * FROM employees;
+
+EXPLAIN SELECT * FROM employees;
+/*
+mysql> explain select * from user;
++----+-------------+-------+------+---------------+------+---------+------+------+-------+
+| id | select_type | table | type | possible_keys | key  | key_len | ref  | rows | Extra |
++----+-------------+-------+------+---------------+------+---------+------+------+-------+
+|  1 | SIMPLE      | user  | ALL  | NULL          | NULL | NULL    | NULL |    1 |       |
++----+-------------+-------+------+---------------+------+---------+------+------+-------+
+1 row in set (0.00 sec)
+
+名词解释
+id:
+  select查询的序列号，包含一组数字，表示查询中执行select子句或者操作的执行顺序
+  全部相同：从上到下执行顺序
+  全部不同：序列号逐渐增大，序列号越大，越先执行
+  既有相同，又有不同：不同的首先执行序列号大的，然后相同的从上到下
+select_type:查询操作的类型
+  simple:普通查询
+  primary:
+  subquery:子查询
+  derive:虚表
+  union:联合查询
+  union result:联合查询结果
+table:执行的表
+type:查询索引的类型
+  执行效率：system>const>eq_ref>ref>range>index>all
+  system:系统查询，仅有一条记录
+  const:常量，主键或者唯一查询仅有一条记录
+  eq_ref:唯一索引扫描，查询等值结果仅一条，例如查询级别是公司CEO的员工
+  ref:非唯一索引扫描，查询等值结果有多条，例如查询级别是公司工程师的员工
+  range:范围索引扫描，between * and *,in(a,b,c)查询
+  index:full index扫描，全索引查询
+  all:全表扫描，效率最低
+possible_key:
+ 理论上可能使用的索引，可以是1个或者多个，也可以是null
+key:
+ 实际使用的索引，可以是possible_key中的一个，也可以是null(索引失效)
+ 
+ possible_key有索引，key有一个索引
+ possible_key有索引，key为null,索引失效
+ possible_key为null，key为null
+ possible_key为null，key有一个索引，覆盖索引
+key_len:
+ 长度越小，效率越高；长度越大，精度越高，效率就越低
+ref:
+ 显示索引中的那列被使用，可以是常量，也可以是null,也可以是某表的字段
+rows:
+ 根据key索引，大致要读取的行数，越小越好
+extra: 
+ using filesort:文件类排序，差，用不到索引的排序，只能自己建排序,需要优化
+ using temporary:临时表，创建临时表，最后还要删除，效率极低，差，分组或者数据统计，需要优化
+ using where:索引用了查找
+ using index:直接从索引读取数据，没有从where查询中读取数据
+ using join buffer
+ 
+重点关注：
+id,tye,key,rows,extra
+ 
+*/
+

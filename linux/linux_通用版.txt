@@ -1,0 +1,170 @@
+vmtools的安装
+	可以实现虚拟机和实体机直接的内容的复制
+	可以实现虚拟机和实体机的共享
+		设置windows共享文件夹
+		在linx上查找/mnt
+	
+运行级别
+	0：关机
+	1：单用户（找回丢失密码）
+	2：多用户无网络服务
+	3：多用户有网络服务
+	4：系统未使用保留给用户
+	5：图形界面
+	6：系统重启
+	
+	切换用户级别，仅仅针对root用户使用
+	init 3 多用户有网络服务
+	init 5 图形界面
+	init 0 关机
+	
+	配置文件
+	/etc/inittab
+	
+	如何找回root密码
+	设置为init 1
+	
+man pwd
+man ls
+
+touch 1.txt 创建空文件
+
+touch 2.txt  3.txt 
+
+ls -l>1.txt 重定向，会覆盖原来内容
+ls -l>>2.txt 追加，不会覆盖	
+cat 2>3.txt 
+cat /etc/inittab >test.txt 
+echo "helloworld" >>2.txt
+echo "this is test" >2.txt 
+	
+cal  日历
+
+cal >> cal.txt 
+
+echo $PATH
+
+tail -20 1.txt 
+head -20 2.txt 
+
+软链接的pwd目录，仍然是软链接目录，但是实际都是实际目录
+
+history 10
+history 
+
+!178 执行历史指令为178的命令
+
+date
+date "+%Y %m %d"
+date "+%Y-%m-%d"
+date "+%Y-%m-%d %H:%M:%S"
+date "+%Y/%m/%d %H:%M:%S"
+
+设置日期
+date -s "2022-02-22 11:20:20"	
+
+cal
+cal 2020 显示2020年的日历
+
+locate数据库，快速查找文件的路径，需要定期更新
+
+updatedb 创建locate数据库
+
+locate hello.txt 查找文件路径
+
+shutdown -h now
+shutdown -h 5
+
+shutdown -r now 
+
+sync 关机或者重启的时候都执行下sync 同步内存数据到硬盘
+
+zip -r mypack.zip /home/lanniao/redis  其中-r表示递归
+
+unzip -d /home/test/ mypack.zip  -d 表示 解压到指定目录
+
+tar -xvf 
+	-c 产生.tar打包文件
+	-v 显示详细信息
+	-f 指定压缩后的文件名
+	-z 打包同时压缩
+	-x 解压tar文件
+	
+tar -zcvf a.tar.gz a.txt b.txt 
+tar -zcvf a.tar /home/lanniao/redis
+tar -zxvf a.tar.gz 
+tar -zxvf a.tar.gz -C /tmp/test 注意指定解压的目录必须存着
+tar -cvf a.tar a.txt b.txt 
+tar -xvf a.tar 
+
+群组管理
+groupadd police
+
+useradd -g police tom
+
+passwd tom 设置密码
+	
+ls -ahl	
+
+id lanniao  查看当前用户组的信息
+
+chown tom a.txt 
+chown lanniao a.txt
+
+chown lanniao.git a.txt 修改用户和组
+
+chown -R lanniao.git /home/lanniao/test 
+
+
+
+chgrp lanniao a.txt 将a.txt 文件 组给为lanniao 
+chgrp lanniao a.txt
+
+chgrp -R lanniao /home/lanniao/test 
+
+
+修改用户组
+usermod -g bandit lanniao  
+
+-rw-r--r-- 1 lanniao lanniao    0 Feb 22 13:53 a.txt
+drwxrwxr-x 2 lanniao lanniao 4096 Feb 17 14:46 test
+crw-rw---- 1 root tty       7, 134 Feb 16 09:54 vcsa6
+brw-rw---- 1 root disk    253,   0 Feb 16 09:54 vda
+lrwxrwxrwx 1 root root          15 Feb 16 09:54 stderr -> /proc/self/fd/2
+lrwxrwxrwx 1 root root          15 Feb 16 09:54 stdin -> /proc/self/fd/0
+lrwxrwxrwx 1 root root          15 Feb 16 09:54 stdout -> /proc/self/fd/1
+
+- 表示普通文件
+d 表示目录文件
+l 表示软链接
+b 表示块（硬盘）
+c 表示字符设备(键盘，鼠标)
+
+	其中时间表示文件修改的最后时间
+	
+chmod u+rw a.txt
+chmod g+x a.txt 
+chmod o+x a.txt 
+chmod a+wx a.txt
+chmod g-w a.txt
+chmod u=wrx,g=rx,o=rx a.txt   	
+	u 所有者
+	g 所在组
+	o 其他组
+	a 所有人
+
+
+crontab -l 查询
+crontab -e 编辑
+crontab -r 删除
+20 20 * * * （分钟 时 日 月 星期）
+	* 表示任何时间
+	,代表不连续的时间
+	-表示范围
+	*/n 表示每
+*/10 4 * * * ls -l>> c.txt 
+*/1 * * * * /home/lanniao/test/date.sh	
+	date.sh 
+	  date "+%Y-%m-%d %H:%M:%S" >> /home/lanniao/test/d.txt
+
+	  

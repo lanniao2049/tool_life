@@ -1,0 +1,707 @@
+Mysql专题：
+1.启动和停止命令：
+	必须是管理员运行cmd命令： net stop MySQL57/net start MySQL57
+2.cmd的登录命令
+	mysql -h ip地址 -P 端口 -u 用户 -p密码
+	mysql -u 用户 -p密码
+3.mysql常用的命令
+	show databases; --查看所用的数据库
+	use 数据库;---使用某个数据库登录
+	show tables;---查看所有表
+	show tables from 数据库;---查看指定数据库的所有表
+	desc 表名;
+	查看mysql的版本号
+	select version();
+	不登录用户mysql --verison;
+	select database();
+	select user();
+	#加密
+	SELECT PASSWORD('中国');
+	SELECT MD5('中国');
+4.常量查询和表达式查询以及函数查询
+	select 100;
+	select 'jettry';
+	select 100*99;
+	select version();
+5.别名，如果是多个字符
+	select first_name as name from ab;
+	select first_name name from ab;
+	select first_name "姓 名" from ab;
+6.去重,distinct
+	SELECT DISTINCT department_id FROM departments;
+7.在mysql中+的作用，运算
+	select 100+99;
+	select '123'+99;
+	select 'jerry'+12;
+	select null+10;
+8.ifnull,如果为null则****
+	SELECT IFNULL(commission_pct,0) FROM employees;
+9.模糊查询中通配符的使用
+#查询员工名中第二字符为_的员工名
+SELECT last_name FROM  employees WHERE last_name	LIKE '_\_%';
+#或者
+SELECT last_name FROM employees WHERE last_name LIKE '_$_%' ESCAPE '$';
+10.字符函数
+#其中length函数统计的是字节长度
+SELECT LENGTH('abcd');
+SELECT LENGTH('a b ');
+SELECT LENGTH('中国abc ');
+
+SELECT CONCAT('中国','_','超人');
+
+SELECT UPPER('abc');
+
+SELECT LOWER('ABc');
+
+#substr索引从1开始，统计的是字符
+SELECT SUBSTR('abcdef',2);
+SELECT SUBSTR('abcdefg',1,3);
+
+#instr统计字符串中指定某个字符首次出现的索引位置
+SELECT INSTR('abcdefabcdef','ef');
+
+SELECT TRIM(' aaa ');
+SELECT TRIM(' b b cd ');
+
+SELECT LPAD('abc',10,'*');
+SELECT LPAD('abc',1,'&');
+SELECT RPAD('def',10,'*');
+
+SELECT REPLACE('abceeffeegg','ee','_');
+11.#数字函数
+SELECT ROUND(4.5);
+SELECT ROUND(-4.5);
+SELECT ROUND(-4.545,2);
+
+#向上
+SELECT CEIL(4.56);
+SELECT CEIL(-4.23);
+
+#向下
+SELECT FLOOR(4.65);
+SELECT FLOOR(-3.456);
+
+SELECT TRUNCATE(234.45123,3);
+
+SELECT MOD(-10,-3);
+12.#时间函数
+SELECT NOW();
+SELECT CURDATE();
+SELECT CURTIME();
+SELECT YEAR(NOW()) 年;
+SELECT MONTH(NOW());
+SELECT MONTHNAME(NOW());
+SELECT STR_TO_DATE('2019-12-13 19:59 22','%Y-%m-%d %H:%i %s') AS out_put;
+SELECT DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i %s') AS out_put;
+SELECT DATEDIFF('2019-12-14','2019-3-28');
+13.#if控制函数
+SELECT IF(10>5,'大','小');
+14.case函数
+#case函数
+SELECT salary 原工资,department_id,
+CASE department_id
+WHEN 10 THEN salary*1.1
+WHEN 20 THEN salary*1.2
+WHEN 30 THEN salary*1.3
+WHEN 40 THEN salary
+ELSE salary*2
+END AS 新工资
+FROM employees;
+#新增等级划分
+SELECT salary,
+CASE 
+WHEN salary>20000 THEN 'A'
+WHEN salary>15000 THEN 'B'
+WHEN salary>10000 THEN 'C'
+ELSE 'D'
+END AS 薪资等级
+FROM employees;
+15.#分组函数
+SELECT SUM(salary) FROM employees;
+SELECT AVG(salary) FROM employees;
+SELECT MIN(salary) FROM employees;
+SELECT MAX(salary) FROM employees;
+SELECT COUNT(salary) FROM employees;
+SELECT SUM(salary),SUM(DISTINCT(salary)) FROM employees;
+#sum,avg主要用于数据
+#min,max,count可以使用任何字段
+#sum,avg,count都忽略了null
+SELECT SUM(commission_pct)和,AVG(commission_pct)平均,
+MAX(commission_pct)最大,MIN(commission_pct) 最小,
+COUNT(commission_pct) 和 FROM employees;
+#count函数的使用
+SELECT COUNT(salary) FROM employees;
+SELECT COUNT(*) FROM employees;
+SELECT COUNT(1) FROM employees;
+16.#分组函数group by 的使用
+SELECT MAX(salary),MIN(salary),department_id 
+FROM employees GROUP BY department_id;
+#分组函数查询，默认排序为升序
+SELECT MAX(salary),department_id
+FROM employees
+WHERE department_id IS NOT NULL
+GROUP BY department_id
+HAVING MAX(salary)>10000
+ORDER BY MAX(salary) DESC;
+类型        	关键字   表        		位置
+分组函数前筛选  where   原始表     	 group by之前
+分组函数后筛选  having  分组后结果   group by之后
+17.#内连接
+SELECT e.`first_name`,e.`job_id`,j.`job_title`,
+e.`department_id`,d.`department_name`
+FROM employees e
+INNER JOIN jobs j ON e.`job_id`=j.`job_id`
+INNER JOIN departments d ON e.`department_id`=d.`department_id`;
+#左连接(左边为主表)，右连接(右边为主表)
+#查询部门没有员工的信息
+SELECT d.`department_id`,d.`department_name`,
+e.`employee_id` FROM departments d 
+LEFT JOIN employees e
+ON d.`department_id`=e.`department_id`
+WHERE e.`employee_id` IS NULL;
+18.子查询
+	子查询可以放在select/from/where/having后面
+	in/not in/any/some/all/exists
+#子查询 in/not in/any/some/all exists
+#查询大于各个本部门平均工资的员工信息
+SELECT e.`last_name`,e.`salary`,e.`department_id`,ev.avg_salary
+FROM employees e
+INNER JOIN (
+SELECT AVG(salary) avg_salary,department_id d_id
+FROM employees
+GROUP BY department_id
+) ev ON e.`department_id`=ev.d_id
+AND e.`salary`>ev.avg_salary;
+##
+SELECT last_name,salary,department_id
+FROM employees
+WHERE department_id IN(
+SELECT department_id FROM departments WHERE department_id>30
+) AND salary>ANY(
+SELECT salary FROM employees
+);
+#exists,是先查询主表后再查询从表
+SELECT * FROM beauty g
+WHERE NOT EXISTS(
+ SELECT * FROM boys b
+ WHERE b.`id`=g.`boyfriend_id`
+);
+19.#分页查询,limit分页查询查询起始从0开始，并且分页查询语句放在查询最后
+#分页查询limit page,size
+#分页查询limit (page-1)*size,size
+SELECT * FROM employees LIMIT 10;
+SELECT * FROM employees LIMIT 0,10;
+#查询有奖金的较高工资的前10名员工
+SELECT * FROM employees
+WHERE commission_pct IS NOT NULL
+ ORDER BY salary DESC LIMIT 10;
+标准查询的执行顺序
+select * // 执行66
+from 表A //首先执行11
+inner join 表B on 条件 //其他执行22
+where 条件  //再次执行33
+group by 分组  //44
+having 条件  // 再次执行55
+order by 排序 // 执行完毕后排序77
+limit 分页 // 最后分页88
+20.联合函数union	
+	1.表A和表b 中包含字段长度一致
+	2.表A和表b 中包含字段类型一致
+	3.表A和表b 中如果字段和值都一样，过滤掉，如果不过来可以使用union all 
+21.delete和truncate区别
+	1.delete可以有where,truncate不可以
+	2.truncate删除效率高
+	3.delete删除有返回值，truncate没有返回值
+	4.delete可以回滚，truncate不可以回滚
+22.数据库的管理
+#数据库的创建，及删除
+CREATE DATABASE IF NOT EXISTS books;
+#修改数据库的字符集
+ALTER DATABASE books CHARACTER SET gbk;
+#删除数据库
+DROP DATABASE IF EXISTS books;
+23.表的管理
+	alter table 表明 modify|add|drop|change column 列名 列类型
+ALTER TABLE jobs CHANGE COLUMN j job_title VARCHAR(35);
+ALTER TABLE jobs MODIFY COLUMN job_title VARCHAR(40);
+ALTER TABLE jobs ADD COLUMN tt VARCHAR(10);
+ALTER TABLE jobs DROP COLUMN tt;
+24.#整型
+/*
+tinyint smallint mediumint int/Integer Bigint
+1字节	2字节	  3字节		4字节	8字节
+注意事项：
+  1.整型默认有符号表示，如果要无符号表示必须使用unsigned修饰
+  2.整型的每个类型都有一定的范围限制，如果超出范围限制就使用最大的默认
+  限制值
+  3.整型后面的数据长度要求,例如int(5)只是如果长度不够5位就左边补零显示，
+  只是如果要使用必须使用zerofill修饰
+*/
+DROP TABLE IF EXISTS test1;
+CREATE TABLE test1(
+  id TINYINT UNSIGNED,
+  salary SMALLINT(5) ZEROFILL ,
+  price INT(4) 
+);
+DESC test1;
+INSERT INTO test1 VALUES(-1,-123,-123456789);
+INSERT INTO test1 VALUES(2,65536,123456789);
+INSERT INTO test1 VALUES(3,456,456789);
+SELECT * FROM test1;
+25.#浮点类型
+/*
+  float(M,D),double(M,D),dec(M,D)/decimal(M,D)
+  注意事项：
+   1.其中M是整数部分+小数部分(D)总位数,D是小数部分，不够补齐，多余的
+   四舍五入
+   2.浮点类型其中如果整数部分超出M限制，则按照最大限制，例如double(5,2)
+   中新增数据123456.7，则默认为999.99
+   3.float和double如果不设置m,d默认数据多少就插入多少，
+   dec/decimal则默认是(10,0)
+*/
+DROP TABLE IF EXISTS test2;
+CREATE TABLE test2(
+   salary FLOAT(7,2),
+   price DOUBLE(5,2),
+   distance DEC(5,2),
+   hight DECIMAL(5,2)
+);
+DESC test2;
+INSERT INTO test2 VALUES(23000.234,128.882,123,123.0234);
+INSERT INTO test2 VALUES(23000123.2,1281.882,123211,123222.0234);
+SELECT * FROM test2;
+26.#字符类型
+/*
+  char(2)     固定长度字符(含汉字，一个汉字一个字符)，占空间，效率高
+  varchar(10) 不定长度，最大长度为10，相比较节省空间，效率低
+  enum 枚举类型
+  set 集合类型
+*/
+DROP TABLE IF EXISTS test3;
+CREATE TABLE test3(
+ id VARCHAR(5),
+ sex CHAR(2),
+ lel ENUM('A','B','C'),
+ coll SET('11','22','33')
+);
+DESC test3;
+INSERT INTO test3 VALUES('Rose','man','b','11,22,33');
+SELECT * FROM test3;
+27.#日期类型
+/*
+date,datetime,year,timestamp
+datetime  8个字节 范围1000-9999 不受时区影响
+timestamp 4个字节 范围1970-2038  受时区影响
+*/
+DROP TABLE IF EXISTS test4;
+CREATE TABLE test4(
+  current_d DATE,
+  current_t TIME,
+  current_dt DATETIME,
+  current_y YEAR,
+  current_tt TIMESTAMP
+);
+DESC test4;
+#查询时区
+SHOW VARIABLES LIKE 'time_zone';
+#设置时区
+SET time_zone='+8:00';
+INSERT INTO test4 VALUES(NOW(),NOW(),NOW(),NOW(),NOW());
+SELECT * FROM test4;
+28.#约束
+/*
+  非空：not null,保证插入数据不能为空
+  默认：default,不插入数据，则使用默认数据
+  主键：primary key,不能为空+唯一
+  唯一：unique,唯一，可以为空
+  检查：check,mysql不支持
+  外键：foreign key，从表
+*/
+CREATE DATABASE students;
+USE students;
+
+CREATE TABLE major(
+id INT PRIMARY KEY,
+majorname VARCHAR(10) NOT NULL
+);
+#列级约束添加
+CREATE TABLE studentinfo(
+sid INT PRIMARY KEY,#主键
+sname VARCHAR(6) NOT NULL,#非空
+sex CHAR(1) CHECK(sex='男' OR sex='女'),#检查,mysql不支持
+age INT DEFAULT 18,#默认约束
+seat INT UNIQUE,#唯一约束
+majorid INT REFERENCES major(id)#外键约束
+);
+DESC studentinfo;
+#查看表中的所有索引
+SHOW INDEX FROM studentinfo;
+
+DROP TABLE IF EXISTS studentinfo;
+#表级约束,not null和default不能使用表级约束
+CREATE TABLE studentinfo(
+sid INT,
+sname VARCHAR(6),
+sex CHAR(1),
+age INT,
+seat INT,
+majorid INT,
+CONSTRAINT pk PRIMARY KEY(sid),
+CONSTRAINT ck CHECK(sex='男' OR sex='女'),
+CONSTRAINT uk UNIQUE(seat),
+CONSTRAINT fk_student_major FOREIGN KEY(majorid) REFERENCES major(id)
+);
+DESC studentinfo;
+SHOW INDEX FROM studentinfo;
+#通用的约束
+DROP TABLE IF EXISTS studentinfo;
+CREATE TABLE studentinfo(
+sid INT PRIMARY KEY,
+sname VARCHAR(6) NOT NULL,
+sex CHAR(1) CHECK(sex='男' OR sex='女'),
+age INT DEFAULT 18,
+seat INT UNIQUE,
+majorid INT,
+CONSTRAINT fk_student_major FOREIGN KEY(majorid) REFERENCES major(id)
+);
+#主键和唯一约束的区别
+/*
+类别   唯一   为空   多个   组合
+主键   是     不能   1个    可以 		
+唯一   是     可以   多个   可以
+*/
+#外键约束的说明
+/*
+1.外键约束在从表中
+2.外键约束的字段类型及长度和主表一致或者兼容
+3.外键约束中的主表字段应该有主键约束或者唯一约束修饰
+4.新增数据先增加主表后从表，删除数据先从表后主表
+*/
+#约束的修改，添加及删除
+/*
+修改
+alter table studentinfo modify column sid primary key;
+alter table studentinfo modify column sname not null;
+alter table studentinfo add constraint fk_s_m foreign key(marjorid) references major(id);
+
+atler table drop primary key;
+alter table drop index xxx;
+*/	
+29.#标识列
+/*
+1.只能使用于数值类型(整型和浮点)
+2.只能使用key(主键，唯一，外键)
+3.仅可以使用一个字段使用
+*/
+DROP TABLE IF EXISTS test1;
+CREATE TABLE test1(
+id INT PRIMARY KEY AUTO_INCREMENT,
+sex CHAR(2)
+)
+DESC test1;
+#查看步长
+SHOW VARIABLES LIKE '%AUTO_INCREMENT%';
+#修改默认步长
+SET auto_increment_increment=2;
+30.#事务trancation
+/*
+事务的特性ACID
+Atomicity
+Consistency
+Isolation
+Durability
+*/
+#查询支持事务
+SHOW ENGINES;
+
+#事务分类
+/*
+显式事务：
+需要手动开启和关闭，该事务的开启和关闭仅对当前会话事务起作用
+set autocommit=0;
+隐式事务：
+默认的update,insert,delete等操作
+查询默认事务
+show varables like 'aotucommit';
+*/
+#查看默认的事务类型
+SHOW VARIABLES LIKE 'autocommit';
+#修改默认的事务类型,0是默认关闭事务需要手动提交，1是自动提交事务
+SET autocommit=1;
+
+#手动提交事务样例
+SET autocommit=0;
+#事务更新语句
+UPDATE ****;
+UPDATE ****;
+#提交或者回滚事务
+COMMIT;#或者rollback;
+
+#事务的隔离级别
+/*
+ read uncommit 脏读，不可重复读，幻读
+ read commited 不可重复读，幻读
+ repeatable commite 幻读
+ serializable 串型
+ 
+ oracle 默认是read commited,还可以有seriable
+ mysql 默认是repeatcommit,还可以有read uncommit,read commite,serializable
+*/
+#查询mysql的事务隔离级别
+SELECT @@tx_isolation;
+#设置事务的隔离级别
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+#设置事务的回滚点或者
+DELETE ****
+SAVEPOINT a;
+DELETE ***
+#回滚事务
+ROLLBACK;
+
+31.#视图view
+/*
+使用视图的好处：
+ 重复使用sql语句
+ 简化查询操作，不必要知道非常详细的细节
+ 提高安全性
+1.视图的创建
+2.视图的修改
+3.视图的删除
+*/
+#创建视图
+CREATE VIEW my1
+AS SELECT AVG(salary) a,MAX(salary) m,MIN(salary) b FROM employees;
+#查询操作
+SELECT * FROM my1;
+#修改视图
+CREATE OR REPLACE VIEW my1
+AS SELECT SUM(salary) s,MAX(salary) m,MIN(salary) b FROM employees;
+#修改视图
+ALTER VIEW my1
+AS SELECT COUNT(1) c,SUM(salary) s,AVG(salary) a FROM employees;
+#删除视图，必须具备删除权限
+DROP VIEW my1;
+#查看视图的结构；
+DESC my1;
+SHOW CREATE VIEW my1;
+
+
+32.#自定义变量：用户变量，在当前会话生效，任何位置，一般使用@修饰
+#设置和更新用户变量 
+SET @name:='Jack';
+SELECT COUNT(*) INTO @count FROM employees;
+#查询用户变量
+SELECT @name;
+SELECT @count;
+
+#举例
+SET @m:=10;
+SET @n:=20;
+SET @l:=@m+@n;
+
+SELECT @l;
+#自定义变量：局部变量,进制begin end存储里面生效，且仅在首行，一般不使用@修改
+#设置自定义局部变量
+DECLARE salary INT DEFAULT 100000;
+DECLARE jj INT DEFAULT 20000;
+
+SET SUM = salary +jj;
+33.#存储过程
+/*
+使用存储过程的优点：
+1.提高代码的重用性
+2.简化操作
+3.减少编译次数和连接数据的次数(批处理)
+*/
+#创建存储过程
+CREATE PROCEDURE 存储过程名称(数据摸 参数 参数类型)
+BEGIN
+	存储过程
+END
+#注意事项：
+/*
+存储过程多个查询语句直接使用分号。
+在end 结束使用 delimiter $
+
+存储过程的模式有
+in  输入
+out 输出
+inout 既可以输入又可以输出
+*/
+#无参举例说明
+
+SELECT * FROM admin;
+
+DELIMITER $
+CREATE PROCEDURE my2()
+BEGIN
+  INSERT INTO admin(username,PASSWORD) VALUES('Jack','123456'),
+  ('Rose','33'),('Licy','e323'),('SenT','2312');
+END $
+#调用存储过程
+CALL my2();
+#调用in模式的存储过程
+DELIMITER $
+CREATE PROCEDURE my3(IN username VARCHAR(10),IN PASSWORD VARCHAR(10))
+BEGIN
+      DECLARE result INT DEFAULT 0;#声明局部变量并初始化
+      SELECT COUNT(*) INTO result
+      FROM admin
+      WHERE admin.`username`=username AND admin.`password`=PASSWORD;
+      SELECT IF(result>0,'sucess','fail');
+END $
+#调用in的存储过程
+SELECT * FROM admin;
+CALL my3('Jack','121');
+
+#调用out的存储模式
+DELIMITER $
+CREATE PROCEDURE my4(IN id INT,OUT username VARCHAR(10),OUT pass VARCHAR(10))
+BEGIN
+  SELECT admin.`username`,admin.`password` INTO username,pass
+  FROM admin WHERE admin.`id`=id;
+END $
+#查询in,out的存储语言
+CALL my4(1,@username,@pass);
+SELECT @username,@pass;
+
+#调用inout的存储过程
+DELIMITER $
+CREATE PROCEDURE my5(INOUT a INT,INOUT b INT)
+BEGIN
+     SET a = a*2;
+     SET b = b*2;
+END $
+#查询inout的存储过程
+SET @m:=10;
+SET @n:=20;
+CALL my5(@m,@n);
+SELECT @m,@n;
+
+#删除存储过程
+DROP PROCEDURE my5;
+#查看存储过程结构
+SHOW CREATE PROCEDURE my4;
+34.#函数
+/*
+与存储过程的区别，有且仅有一个返回值
+存储过程可以返回0个或者多个返回结果
+create function 函数名称(参数列表) results 参数类型
+begin
+end 
+*/
+#函数无参调用
+DELIMITER $
+CREATE FUNCTION f1() RETURNS INT
+BEGIN
+ DECLARE result INT DEFAULT 0;
+ SELECT COUNT(*) INTO result FROM admin;
+ RETURN result;
+END $
+#函数查询
+SELECT f1();
+#函数有参调用
+DELIMITER $
+CREATE FUNCTION f2(id INT) RETURNS VARCHAR(10)
+BEGIN
+   DECLARE st VARCHAR(10) DEFAULT '';
+   SELECT CONCAT(username,'-',PASSWORD) INTO st FROM admin WHERE admin.`id`=id;
+   RETURN st;
+END $
+SELECT f2(1);
+#函数删除
+DROP FUNCTION f2;
+#函数结构查询
+SHOW CREATE FUNCTION f2;
+
+35.#if分支结构
+/*
+可以在任何位置
+*/
+SELECT IF(ex1,ex2,ex3);
+
+SELECT IF(10>2,'大','小');
+#case分支结构
+/*
+可以单独使用，也可以使用在begin/end中
+*/
+DELIMITER $
+CREATE PROCEDURE case1(IN score INT)
+BEGIN
+	CASE
+	WHEN score>=90 AND score<100 THEN SELECT 'A';
+	WHEN score>=80 THEN SELECT 'B';
+	WHEN score>=70 THEN SELECT 'C';
+	ELSE SELECT 'D';
+	END CASE;
+END $
+
+CALL case1(88);
+#if elseif的分支结构使用
+/*
+仅能使用在begin/end中
+*/
+DELIMITER $
+CREATE FUNCTION test_if(score INT) RETURNS CHAR
+BEGIN
+	IF score>=90 AND score<100 THEN RETURN 'A';
+	ELSEIF score>=80 THEN RETURN 'B';
+	ELSEIF score>=60 THEN RETURN 'C';
+	ELSE RETURN 'D';
+	END IF;
+END $
+
+SELECT test_if(30);
+
+#循环
+/*
+只能使用在begin/end中;
+while,loop,repeat
+跳出循环iterate,继续下次循环
+	`myemployees`leave类似break,跳出循环
+*/
+#循环插入100条数据
+DELIMITER $
+CREATE PROCEDURE test_w1(IN insertcount INT)
+BEGIN
+	DECLARE i INT DEFAULT 1;
+	WHILE i<=insertcount DO
+	INSERT INTO admin(username,PASSWORD) VALUES(CONCAT('Tik',i),'678');
+	SET i=i+1;
+	END WHILE;
+END $
+CALL test_w1(100);
+SELECT *FROM admin;
+#循环语句使用leave
+TRUNCATE TABLE admin;
+DELIMITER $
+CREATE PROCEDURE test_w2(IN insertcount INT)
+BEGIN
+	DECLARE i INT DEFAULT 1;
+	a:WHILE i<=insertcount DO
+	INSERT INTO admin(username,PASSWORD) VALUES(CONCAT('Lucy',i),'678');
+	IF i>=20 THEN LEAVE a;
+	END IF;
+	SET i=i+1;
+	END WHILE a;
+END $
+CALL test_w2(100);
+SELECT * FROM admin;
+#循环语句使用itreate
+DELIMITER $
+CREATE PROCEDURE test_w3(IN insertcount INT)
+BEGIN
+	DECLARE i INT DEFAULT 0;
+	a:WHILE i<=insertcount DO
+	SET i=i+1;
+	IF MOD(i,2)!=0 THEN ITERATE a;
+	END IF;
+	INSERT INTO admin(username,PASSWORD) VALUES(CONCAT('Lucy',i),'678');
+	END WHILE a;
+END $
+CALL test_w3(100);
+SELECT * FROM admin;
+

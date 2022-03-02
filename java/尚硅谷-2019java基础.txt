@@ -1,0 +1,1416 @@
+1.byte,short,char三种类型运行不能byte,short,char接受，只能用int接受
+   byte a = 1;
+   short b = 2;
+   char c = 'a';
+   byte/short/char d = a+b/a+c/b+c/a+a/b+b; -----错误
+2.编译
+	long l = 123123;----为什么编译成功
+	long e = 1231231232123;-------为什么编译失败
+	float a = 12.3;--------编译失败
+	float a = 12.3f;
+	byte a= 2;
+	byte b = a+1; ----编译失败
+	float c = a+12.3; ---编译失败
+	char t = '';---编译失败
+	char t = ' ';
+	char t = '   ';-编译失败
+	short a = 1;
+	a = a+1; //编译失败
+	a = (short)(a+1);
+	a++;自增1不会改变本身的数据类型，且效率高
+	a+=2;不会改变本身的数据类型，其中+= 表示一个运算符，效率高，会直接在变量a所代表的内存中的数值增加2
+	a = a+2;首先提升到int,在强制转换到short，有精度损失
+	
+	byte b = 127;
+	b++;
+	System.out.println(b); //为什么结果是-128
+3.char和String的区别
+		// 练习* *
+		System.out.println('*'+'\t'+'*');
+		System.out.println('*'+"\t"+'*');
+		System.out.println('*'+'\t'+"*");
+		System.out.println('*'+('\t'+"*"));
+		System.out.println('a'+1+"hellow");
+4.计算机底层都是以补码的形式存储数据的
+	原码，反码，补码
+5.char的特殊表示
+	//表示的是ASI码值
+	char a = 97;
+	char b = '5';
+6.取余(取模)运算结果(符号根据被取模数相同)
+	int a = 14;
+	int b = 3;
+	int c = -14;
+	int d = -3;
+	int result1 = a%b;
+	int result2 = a%d;
+	int result3 = c%b;
+	int result4 = c%d
+7.经典赋值思考题
+	1.
+	 short a = 2;
+	 a = a+2;
+	 a+2;
+	 区别是什么
+	2.
+	 int a = 1;
+	 a*=0.1;
+	 System.out.println(a);
+	 a++;
+	 System.out.println(a);
+	3.
+	int m =2;
+	int n = 3;
+	n*=m++;
+	System.out.println("m="+m+",n="+n);
+	4.
+	int m = 10;
+	m+=(m++)+(++m);
+	System.out.println(m);
+8.经典逻辑思考题
+	public void test1() {
+		int x =1;
+		int y = 1;
+		if (x++==2 & ++y==2) {
+			x=7;
+		}
+		System.out.println("x="+x+",y="+y);
+	}
+	public void test2() {
+		int x =1;
+		int y = 1;
+		if (x++==2 && ++y==2) {
+			x=7;
+		}
+		System.out.println("x="+x+",y="+y);
+	}
+	public void test3() {
+		int x =1;
+		int y = 1;
+		if (x++==1 | ++y==1) {
+			x=7;
+		}
+		System.out.println("x="+x+",y="+y);
+	}
+	public void test4() {
+		int x =1;
+		int y = 1;
+		if (x++==1 || ++y==1) {
+			x=7;
+		}
+		System.out.println("x="+x+",y="+y);
+	}
+	public void test5() {
+		boolean x = true;
+		boolean y = false;
+		short z =42;
+		if((z++==42) &&(y=true))
+			z++;
+		if((x=false) ||(++z==45) )
+			z++;
+		System.out.println(z);
+	}
+9.数据交换的方式有哪些？
+	方式一：
+	int temp = a;
+	a =b;
+	b=temp;
+	方式二：
+	优点：不需要使用临时变量，缺点：相加运算有可能超出范围，只能使用数值交换
+	number1 = number1+number2;
+	number2 = number1-number2;
+	number1 = number1-number2;
+	方法三：
+	number1 = number1^number2;
+	number2 = number1^number2;
+	number1 = number1^number2;
+10.0~255之间求60的16进制表示实现
+	// 求60的16进制表示
+	public static void test8() {
+		int number = 60;
+		// 方式一：
+		String a = Integer.toBinaryString(number);
+		String b = Integer.toHexString(number);
+		System.out.println("BinaryString:"+a+",HexString:"+b);
+		//方式二,手动
+		int in1 = number&15;
+		String j = (in1>9)? (char)((in1-10)+'a')+"":in1+"";
+		int in2 = number>>>4;
+		int in3 = in2&15;
+		String k = (in3>9)? (char)((in3-10)+'a')+"":in3+"";
+		System.out.println(k+""+j);
+	}
+11.scanner的使用
+    public static void test9() {
+		//测试scanner
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("请输入您的姓名");
+		String name = scanner.nextLine();
+		System.out.println("姓名："+name);
+		System.out.println("请自我介绍下：");
+		String line = scanner.nextLine();
+		System.out.println("自我介绍："+line);
+		System.out.println("请输入您的年龄：");
+		int age = scanner.nextInt();
+		System.out.println("年龄："+age);
+		System.out.println("请输入您的身高：");
+		double height = scanner.nextDouble();
+		System.out.println("身高："+height);
+	}
+12.if-else判断
+	//注意结果是什么，为什么，最近原则
+	public static void test10() {
+		int x = 4;
+		int y = 1;
+		if(x>2)
+			if(y>2)
+				System.out.println("输出结果是：aaaaaaa");
+	    else
+				System.out.println("bbbbbbbbb");
+	}
+13.使用switch判断
+	public static void test11() {
+		//根据键盘输入年，月，日，计算是当前年份的第几天
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("请输入年份：");
+		int year = scanner.nextInt();
+		System.out.println("请输入月份：");
+		int month = scanner.nextInt();
+		System.out.println("请输入日期：");
+		int day = scanner.nextInt();
+		int numberDay = 0;
+		switch(month) {
+			case 12:
+				numberDay+=30;
+			case 11:
+				numberDay+=31;
+			case 10:
+				numberDay+=30;
+			case 9:
+				numberDay+=31;
+			case 8:
+				numberDay+=31;
+			case 7:
+				numberDay+=30;
+			case 6:
+				numberDay+=31;
+			case 5:
+				numberDay+=30;
+			case 4:
+				numberDay+=31;
+			case 3:
+				//注意这里可能有闰年的计算，普通年份能被4整除且不被100整除的，实际年份能被400整除的
+				if((year%4==0 && year%100!=0)|| (year%400==0)) {
+					numberDay+=29;
+				}else {
+					numberDay+=28;
+				}
+			case 2:
+				numberDay+=31;
+			case 1:
+				numberDay+=day;
+		}
+		System.out.println(year+"年"+month+"月"+day+"日，是本年的第"+numberDay+"天");
+	}
+14.最大公倍数和最小公约数；水仙花，素数
+	public static void test12() {
+		//求两个正整数的最大公约数和最大公倍数,例如12和20的最大公约数为4，最小公倍数为60
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("请输入第一个正整数：");
+		int m = scanner.nextInt();
+		System.out.println("请输入第二个正整数：");
+		int n = scanner.nextInt();
+		//最大公约数
+		int min = (m<=n)? m:n;
+		for (int i = min; i>=1; i--) {
+			if (m%i==0 && n%i==0) {
+				System.out.println("最大公约数是："+i);
+				break;
+			}
+		}
+		//最大公倍数
+		int max = (m>=n)?m:n;
+		for (int i = max; i <= m*n; i++) {
+			if (i%m==0 && i%n==0) {
+				System.out.println("最大公倍数："+i);
+				break;
+			}
+		}
+	}
+	-----------
+	public static void test13() {
+		//求3位正整数的水仙花数，所谓水仙花就是153=1*1*1+5**5*+3*3*3；
+		for (int i = 100; i < 1000; i++) {
+			int a = i/100;
+			int b = (i/10)%10;
+			int c = i%100%10;
+			if (i==(a*a*a+b*b*b+c*c*c)) {
+				System.out.println(i);
+			}
+		}
+	}
+	---
+	public static void test15() {
+		//求100之内的素数(质数)，只能被1和本身整除的数(1不是素数)
+		for (int i = 1; i <= 100; i++) {
+			boolean isFlag = true;
+			for (int j = 2; j <= Math.sqrt(i); j++) {
+				if (i%j==0) {
+					isFlag = false;
+					break;
+				}
+			}
+			if (isFlag) {
+				System.out.println("素数是："+i);
+			}
+		}
+	}
+15.初始化
+	char的默认初始化是0，不是'0'
+	Short/Integer/Long a = 128;
+	Short/Integer/Long b = 128;
+	判断a和b是否相等，为什么？
+	Character a=128;
+	Character b=128;
+	判断a和b是否相等，为什么？Character最大和最小值是多少？
+16.多维数组
+	int[] number = {1,2,3,4}; -----类型推断
+	//为什么下面的不行
+	int[] age;
+	age = {23,45,29} -----错误
+	
+	int[][] levels = new int[4][];
+	System.out.println(levels[3][0]);----报空指针错误
+	System.out.println(levels[1]);---------为什么是null
+
+	int[][] ab = new int[4][3];
+	System.out.println(ab[0]);
+	System.out.println(ab[0][0]);
+	
+	int[]x,y[];
+	x是一维数组，y是二维数组，为什么
+	----------------杨辉三角
+	public static void yangHui() {
+		//计算1到10行的杨辉三角数组，首末位都为1，非首末为关系是number[i][j]=number[i-1][j-1]+number[i-1][j];
+		// 1.初始数组
+		int[][] number = new int[10][];
+		// 2.赋值数组
+		for (int i = 0; i < number.length; i++) {
+			number[i] = new int[i+1];
+			//首末上赋值
+			number[i][0] = 1;
+			number[i][i] = 1;
+			//非首末行赋值
+			if (i>1) {
+				for (int j = 1; j < number[i].length-1; j++) {
+					number[i][j] = number[i-1][j-1] +number[i-1][j];
+				}
+			}
+		}
+		// 3.遍历数组
+		for (int i = 0; i < number.length; i++) {
+			for (int j = 0; j < number[i].length; j++) {
+				System.out.print(number[i][j]+"   ");
+			}
+			System.out.println();
+		}
+	}
+	//最大值最小值，平均值
+	public static void test18() {
+		// 数组包含10个元素，求【10,99】的最大值，最小值，总和，平均值
+		int[] nums = new int[10];
+		for (int i = 0; i < nums.length; i++) {
+			nums[i] =(int) (Math.random()*(99-10+1)+10);
+			System.out.print(nums[i]+"\t");
+		}
+		System.out.println();
+		//最大值
+		int maxValue = nums[0];
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i]>=maxValue) {
+				maxValue = nums[i];
+			}
+		}
+		System.out.println("MaxValue: "+maxValue);
+		// 最小值
+		int minValue= nums[0];
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i]<=minValue) {
+				minValue = nums[i];
+			}
+		}
+		System.out.println("MinValue:"+minValue);
+		// sum
+		int sum = 0;
+		for (int i = 0; i < nums.length; i++) {
+			sum+=nums[i];
+		}
+		System.out.println("sum:"+sum);
+		System.out.println("平均值："+sum/nums.length);
+	}
+	//数组复制，反转，查找
+	public static void test19() {
+		//数组复制，反转，查找(线性查找，二分查找)
+		String[] names = new String[] {"Jack","Rose","Bill","Lucy"};
+		for (int i = 0; i < names.length; i++) {
+			System.out.print(names[i]+"\t");
+		}
+		System.out.println();
+		String[] copy = new String[names.length];
+		for (int i = 0; i < copy.length; i++) {
+			copy[i] = names[i];
+		}
+		copy[1] = "Gate";
+		for (int i = 0; i < names.length; i++) {
+			System.out.print(names[i]+"\t");
+		}
+		System.out.println();
+		for (int i = 0; i < copy.length; i++) {
+			System.out.print(copy[i]+"\t");
+		}
+		//数组反转
+		//方法一：
+		for (int i = 0; i < names.length/2; i++) {
+			String temp = names[i];
+			names[i] = names[names.length-i-1];
+			names[names.length-i-1] = temp;
+		}
+		System.out.println();
+		for (int i = 0; i < names.length; i++) {
+			System.out.print(names[i]+"\t");
+		}
+		System.out.println();
+		//方法二：
+		for (int i = 0, j = copy.length-1; i < j; i++,j--) {
+			String temp = copy[i];
+			copy[i] = copy[j];
+			copy[j] = temp;
+		}
+		for (int i = 0; i < copy.length; i++) {
+			System.out.print(copy[i]+"\t");
+		}
+		System.out.println();
+		//查找 
+		//线性查找
+		String[] address = new String[] {"BJ","SH","HZ","SZ","ZZ"};
+		String dest = "HZ";
+		boolean findFlag = false;
+		for (int i = 0; i < address.length; i++) {
+			if (address[i].equals(dest)) {
+				System.out.println("查找到了指定元素："+dest);
+				findFlag = true;
+				break;
+			}
+		}
+		if (!findFlag) {
+			System.out.println("没有找到指定的元素："+dest);
+		}
+		// 二分法查找，二分法查找必须首先排序，只有排序过后才可以使用二分法查找
+		int [] scores = new int[] {-59,-24,-10,0,16,45,61,64,78,83,89,98,100};
+		int dest1 = 164;
+		int head = 0;//初始化首索引
+		int end = scores.length-1;//初始化末索引
+		boolean isFlag = true;
+		while (head <= end) {
+			int middle = (head+end)/2;
+			if (scores[middle]==dest1) {
+				System.out.println("查找到指定元素："+scores[middle]);
+				isFlag = false;
+				break;
+			}
+			if (scores[middle]<dest1) {
+				head = middle+1;
+			} else {
+				end = middle-1;
+			}
+		}
+		if (isFlag) {
+			System.out.println("没有找到指定的元素："+dest1);
+		}
+	}
+17.算法
+	十种排序
+	选择排序
+		直接选择排序，堆排序
+	交换排序
+		冒泡排序，快速排序
+	插入排序
+		直接插入排序，折半插入排序，shell排序
+	归并排序
+	桶式排序
+	算法的特性：
+		输入，输出，有穷性(有限性)，确定性，可行性
+18.属性和局部属性的局部
+	相同点：
+		数据类型可以是基本数据类型、String、数组、对象，格式都是 数据类型 变量=变量值
+		都是先声明，后使用
+		都有作用域
+	不同点：
+		1.位置不同
+			属性在{}
+			局部属性在方法里，方法形参，构造器，构造器形参，代码块
+		2.修饰符
+			属性可用使用public,private,protected,缺省
+			局部属性不可以使用public,private,protected修饰
+		3.默认初始化值
+			属性都有默认初始化值
+			局部属性没有默认初始化值，必须设置
+		4.内存的加载位置
+			属性在堆内存中(非static)
+			局部属性在栈内存中
+19.return使用
+	使用范围：方法 
+	使用作用：
+		结束方法
+		返回值
+	注意事项：
+		return后面不能再声明了
+20.可变形参
+/*
+	 * 可变形参注意事项：
+	 * 	1.格式：数据类型 ... 形参，例如：String ... strings
+	 *  2.当调用可变形参时，传入的形参个数：0个，1个或者多个都可以
+	 *  3.可变形参与其他同名方法构成重载
+	 *  4.可变形参与同类型数组方法一致，不能构成重载
+	 *  5.方法中可变形参必须声明在最后
+	 *  6.方法中可变形参最多只能一个
+	 */
+	
+	public void show(int i) {
+	}
+	public void show(String str) {
+	}
+	public void show(String ...strings) {
+	}
+	//Duplicate method show(String[]) in type Test7
+//	public void show(String[] ars) {
+//		
+//	}
+	public void show(int[] args) {
+	}
+	public void show(String[]args,int[] t) {
+	}
+	//The variable argument type int of the method show must be the last parameter
+//	public void show(int ...is,String ...strings) {}
+	public void show(int number,int ...is) {}
+21.网红题
+	1.
+	public class Test{
+		public static void main(String[] args){
+			int a = 10;
+			int b = 10;
+			method(a,b);//需要在method方法被调用后，仅打印出，a=100,b=200,请写出method()方法
+		}
+		
+	}
+	2.定义一个int数组:int[] arr= new int[]{12,3,3,34,56,77,432};
+	让数组的每个位置上的值去除以首位置的元素，得到的结果，作为该位置上薪资。遍历新的数组。
+	3.
+	 int[] number = new int[10];
+	 System.out.println(numbers);
+	 char[] chars = new char[20];
+	 System.out.println(chars);
+22.this构造器的使用
+	构造器可以使用this调用其他的构造器
+	构造器不能自己调用自己
+	构造器最多n-1个this使用
+	构造器中this必须在首行
+	构造器中最多一个this的使用
+23.重写
+	1.子类的方法名和参数与父类的方法名和参数一致
+	2.子类的修饰符权限不小于父类的修饰符权限
+		子类不能重写父类使用private修饰的方法
+	3.返回值
+		如果父类是void,子类必须也是void
+		如果父类是A类型，子类可以是A类型或者A类型的子类
+		如果父类是基本数据类型，子类也必须是
+	4.异常，子类异常不大于父类的异常
+	5.子类和父类要么都是非static，要么都是static修饰
+23.多态经典题
+public class Test9 {
+	public static void main(String[] args) {
+		Base base = new SubBase();
+		base.add(1, 2,3);
+		SubBase subBase = (SubBase)base;
+		subBase.add(1, 2,3);
+	}
+}
+class Base{
+	public void add(int a,int ...is) {
+		System.out.println("base!");
+	}
+}
+class SubBase extends Base{
+	public void add(int a,int[] numbs) {
+		System.out.println("sub1");
+	}
+	public void add(int a,int b,int c) {
+		System.out.println("sub2");
+	}
+}
+24.==和equal
+	public static void main(String[] args) {
+		/*
+		 * ==，是运算符
+		 * 1.可以是基本数据类型和引用类型
+		 * 2.基本数据类型是值相同，类型可以不相同
+		 * 3.引用类型，是内存地址是否相同
+		 */
+		int a =10;
+		int b =10;
+		double c = 10.0;
+		char d = 10;
+		char e= 'A';
+		char f = 65;
+		System.out.println(a==b);
+		System.out.println(a==c);
+		System.out.println(a==d);
+		System.out.println(e==f);
+		String st1 = new String("A");
+		String st2 = new String("A");
+		System.out.println(st1==st2);
+		/**
+		 * equal 只用是引用类型使用，基本类型不能使用
+		 * 1.equal比较的使用对象实体内容
+		 * 2.object对比是内存地址是否相同，String,File,Date等重写了equal方法，比较的是用对象实体内容
+		 * 3.equal特征：对称性,x.equal(y)为true,则y.equal(x)也true;自反性x.equal(x)为true;传递性x.equal(y)为true,y.equal(z)为true,则x.equal(z)也为true，
+		 * 一致性,x.equlat(y)为true，无论比较多少次都为true;
+		 * x.eqaul(null)为false;x.getClass!=y.getClass，则equal为false
+		 */
+	}
+25.包装类型
+/*
+	 * 包装类型
+	 */
+	public void getMethod() {
+		Integer a = 10;
+		int b =a;
+		// 包装类转换为基本类型
+		int c = a.intValue(); 
+		Boolean flag = new Boolean("true1");
+		boolean flag1 = flag.booleanValue();
+		// String类型或者基本类型转换为包装类型
+		Double.valueOf("20.0");
+		Boolean.valueOf("t1");
+		Integer.valueOf(10);
+		//String 转换为基本类型
+		Integer.parseInt("10");
+		Double.parseDouble("10.0");
+	}
+	//经典面试题1
+	public static void test() {
+		Object o1 = true? new Integer(1):new Double(2.0);
+		System.out.println(o1);
+		Object o2;
+		if(true)
+			o2 = new Integer(1);
+		else
+			o2 = new Double(2.0);
+		System.out.println(o2);
+	}
+	//经典面试题2
+	public static void test1() {
+		Integer a = new Integer(1);
+		Integer b = new Integer(1);
+		System.out.println(a==b);
+		Integer c = 1;
+		Integer d = 1;
+		System.out.println(c==d);
+		Integer e =128;
+		Integer f = 128;
+		System.out.println(e==f);
+		Long l1 = 127l;
+		Long l2 = 127l;
+		System.out.println(l1==l2);
+		//Byte,Long,Integer,Short
+	}
+26.怎么理解多态
+	1.父类引用指向子类对象
+	2.方法中参数可以是父类，接口等，例如Object中的equal(Object o)方法，数据库链接的get(Connection cn)
+	3.抽象及接口指向子类或者实现
+26.Object的toString方法
+	public void test2() {
+		String s = new String("hello");
+		System.out.println(s);
+		System.out.println(s.toString());
+		s = null;
+		System.out.println(s);
+		System.out.println(s.toString());
+	}
+27.饿汉和懒汉单例模式
+public class Test12 {
+	//饿汉模式，线程安全，在加载类的时候就调用，启动耗费资源
+	private static Test12 instance =new Test12();
+	private Test12() {}
+	public static Test12 getInstance() {
+		return instance;
+	}
+}
+class SingletonTest{
+	//懒汉模式，线程不安全，只用在使用的时候才加载
+	private static SingletonTest instance = null;
+	private SingletonTest(){}
+	public static SingletonTest getInstance() {
+		if (instance == null) {
+			instance = new SingletonTest();
+		}
+		return instance;
+	}
+}
+
+class SingletonTest1{
+	private SingletonTest1(){}
+	public static final SingletonTest1 INSTANCE = new SingletonTest1();
+}
+28.final面试题
+public int addOne(final int x) {
+//		return ++x;
+		return x+1;
+	}
+	public int addTwo(final St s) {
+//		return s = new St();
+		return s.getAge()+1;
+	}
+}
+class St{
+	private int age;
+
+	/**
+	 * @return the age
+	 */
+	public int getAge() {
+		return age;
+	}
+
+	/**
+	 * @param age the age to set
+	 */
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
+29.abstract方法不能使用private,final,static修饰
+30.模板设计模式
+/*
+ * template design
+ */
+public class Test15 {
+	public static void main(String[] args) {
+		A b = new B();
+		b.customer();
+		System.out.println("------------------");
+		A c = new C();
+		c.customer();
+	}
+}
+
+abstract class A{
+	public void ready() {
+		System.out.println("开始准备原材料");
+	}
+	public void over() {
+		System.out.println("制造完毕，开始销售");
+	}
+	public abstract void product();
+	//不允许子类继承
+	public final void customer() {
+		ready();
+		product();
+		over();
+	}
+}
+class B extends A{
+	@Override
+	public void product() {
+		System.out.println("开始制造苹果电脑");
+	}
+}
+class C extends A{
+	@Override
+	public void product() {
+		System.out.println("开始制造外星人电脑");
+	}
+}
+31.interface
+	常量，可以省略public static final 
+	方法，可以省略public abstract 
+	不可以创建接口
+	不可构造函数
+	可以实现多现实，类A implemnets B,C{} 
+	既有继承又有实现，要先extends后implemnts
+	接口可以实现多继承，接口A extends B,C{}
+interface AA{}
+interface BB{}
+interface CC{}
+class DD implements AA,BB,CC{}---类可以多实现
+interface EE extends AA,BB{} ---接口多继承
+	下面是经典的面试题
+interface AB{
+	int age =18;
+}
+class AC{
+	int age =32;
+}
+// 先extends后implements(注意interface和class同级)
+class AD  extends AC implements AB{
+	public void getAge() {
+		//The field age is ambiguous
+//		System.out.println(age);
+		System.out.println(super.age);
+		System.out.println(AB.age);
+	}
+}
+//================
+interface A1{
+	void play();
+}
+interface A2{
+	void play();
+}
+//注意接口可以实现多继承
+interface A3 extends A1,A2{
+	//注意这里省略了public static final修饰
+	A4 a4 = new A4("Tom");
+}
+class A4 implements A3{
+	private String name;
+	public A4(String name) {
+		this.name = name;
+	}
+	public String getName() {
+		return name;
+	}
+	@Override
+	public void play() {
+		//The final field A3.a4 cannot be assigned
+//		a4 = new A4("Rose");
+		System.out.println(a4.getName());
+	}
+}
+	
+32. jdk1.8接口的新特性
+
+/*
+ *  jdk1.8接口需要注意的
+ *  接口可以实现静态方法和默认方法
+ *  1.静态方法只能接口调用，其他实现类不可调用
+ *  2.实现类可以调用接口的默认方法，如果实现类重写了该方法则实现重写的方法
+ *  3.实现类继承和实现接口的方法同名同参，优先调用父类的同名方法，但是如果重写了该方法，则实现重写方法
+ *  4.实现类实现多个接口同名同参，则编译报错，接口冲突，实现类重写该方法可以解决
+ *  5.实现类继承和实现接口的方法同名同参，super.method调用父类的方法，接口.super().method调用接口的方法
+ */
+
+interface B1{
+	// 可以省略public
+	public static void play() {
+		System.out.println("开始运行 B1 static paly");
+	}
+	//可以省略public
+	public default void study() {
+		System.out.println("开始运行 B1 default study");
+	}
+	default void live(){
+		System.out.println("居住在中国首都");
+	}
+	public default void goToSchool() {
+		System.out.println("在中国北京上大学");
+	}
+	public default void loveOfLife() {
+		System.out.println("热爱生活的一切");
+	}
+}
+interface B2{
+	public default void loveOfLife() {
+		System.out.println("珍惜身边的每时每刻");
+	}
+}
+class SuperB{
+	public void goToSchool() {
+		System.out.println("在清华大学学习!");
+	}
+}
+class B3 extends SuperB implements B1,B2{
+	@Override
+	public void live() {
+		System.out.println("居住在中国---》北京");
+	}
+	@Override
+	public void loveOfLife() {
+		System.out.println("认认真真的过好每一天，珍惜身边的每一人");
+	}
+	public void allOfLife() {
+		loveOfLife();
+		B1.super.loveOfLife();
+		B2.super.loveOfLife();
+	}
+}
+public class Test17 {
+	public static void main(String[] args) {
+		B3 b1 = new B3();
+		//This static method of interface B1 can only be accessed as B1.play
+//		b1.play();
+		//1.接口的static方法只能接口调用
+		B1.play();
+		//2.实现类可实现接口的默认方法，如果重写该方法，则实现重写方法
+		b1.study();
+		b1.live();
+		//3.实现类继承和实现接口有同名同参方法，默认实现父类同名方法
+		b1.goToSchool();
+		//4.实现类实现多个接口且有同名同参方法，编译报错，即接口冲突，要解决此问题，需要重写该方法
+		//Duplicate default methods named loveOfLife with the parameters () and () are inherited from the types B2 and B1
+		b1.loveOfLife();
+		//5.实现类实现多个接口且有同名同参方法，实现父类方法super().method,实现接口方法 接口.super().method
+		b1.allOfLife();
+	}
+}
+33.内部类
+public class Test18 {
+	public static void main(String[] args) {
+		C1 c1 = new C1();
+		c1.getName();
+	}
+}
+/*
+ *  内部类：成员内部类和局部内部类(方法，代码块，构造器)
+ *  成员内部类型：
+ *  	一方面，当做外部成员：
+ *  		1.可以使用private,protected,public,缺省修饰
+ *  		2.可以使用static修饰
+ *  		3.外出成员结构
+ *      另一方面，当做类
+ *      	1.final修饰
+ *      	2.abstract修饰
+ *       	3.可以有属性，方法，构造器
+ */
+class C1{
+	String name ="Rike";
+	//1.作为外部成员，可以使用4中权限的修饰符
+	private class x1{
+	}
+	
+	class x2{}
+	protected class x3{}
+	public class x4{
+		int age = 18;
+	}
+	//2.作为外部成员，可以使用static修饰
+	public static class x5{
+		int age = 32;
+	}
+	//3.作为外部成员，当成外部结构使用
+	//4.作为类，可以有属性，构造器，方法
+	//5.作为类，可以使用abstract修饰
+	public abstract class x6{
+		String name;
+		int age;
+		public x6() {}
+		public void getName() {
+		}
+	}
+	//6.作为类，可以使用final修饰
+	final class x7{}
+	///////////////////////////
+	//1.局部类，代码块
+	{
+		class x8{}
+	}
+	//2.局部类，构造器
+	public C1() {
+		class x9{}
+	}
+	//3.局部类，方法
+	public void getName(){
+		class x10{
+			String name= "Tom";
+			public void getMethod(String name) {
+				System.out.println(name);
+				System.out.println(this.name);
+				System.out.println(C1.this.name);
+			}
+		}
+		new x10().getMethod("TT");
+	}
+		/*
+	 * 特别要注意的是：
+	 * 1.成员内部类和局部内部类都生成了字节码文件
+	 * 2.局部内部类中调用方法中局部变量
+	 * 		在1.7及以前方法中局部变量必须final修饰
+	 * 		在1.8及以后方法中局部变量可以省略final修饰
+	 */
+	public void getSchool() {
+		int age =20;
+		class x11{
+			public void getAge() {
+				//不可使用下面的，因为默认age使用final修饰，只是省略了
+				//Local variable age defined in an enclosing scope must be final or effectively final
+//			age =30;
+				System.out.println(age);
+			}
+		}
+	}
+}
+34.多线程的使用场景和使用多线程的优点有哪些？
+	使用场景：1.多个任务2.有等待任务3.需要后台运行
+	优点：1.提高程序的响应。2.提高的CPU的利用率。3.改善的程序的结构。一些大型程序分多个线程，独立运行，便于理解和改进。
+35.多线程中的start作用
+	1.启动该线程
+	2.调用该线程的run方法
+	注意：同一线程不能多次调用start()方法，会报错IllegalThreadStateException
+36.thread和runnable的区别和对比
+	thread是继承，有单继承的限制；runnable是实现接口
+	有共享数据的用runnable比较好
+	两个方式都是重写run方法，其中thread的api也是实现runnable接口
+37.线程的生命周期
+	新建——>就绪(通过调用start方法)——>运行(拿到执行权)
+			就绪<——运行(失去执行权或者调用yeild)
+			运行——>死亡(1.执行完毕；2.异常；3.调用stop方法)
+			运行——>阻塞(1.调用sleep方法；2.调用join方法;3.同步锁；4.wait;5.suspend)
+			运行<——阻塞(1.sleep完毕，2.join完毕，3.获取同步锁，4.notify/notifyall,5.resume)
+38.同步锁synchronized的使用
+	synchronize(this)必须是同一把锁，使用的实现的runnable
+	synchronize(xxx.class)必须是同一把锁，使用的是继承thread
+39.死锁的例子
+ public static void main(String[] args) {
+        StringBuffer s1 = new StringBuffer();
+        StringBuffer s2 = new StringBuffer();
+        new Thread(){
+            @Override
+            public void run() {
+                synchronized (s1){
+                    s1.append("a");
+                    s2.append("1");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (s2){
+                        s1.append("b");
+                        s2.append("2");
+                        System.out.println(s1);
+                        System.out.println(s2);
+                    }
+                }
+            }
+        }.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (s2){
+                    s1.append("c");
+                    s2.append("3");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (s1){
+                        s1.append("d");
+                        s2.append("4");
+                        System.out.println(s1);
+                        System.out.println(s2);
+                    }
+                }
+            }
+        }).start();
+    }
+40.如何避免死锁？
+	避免使用相互调用锁；避免使用共享数据
+41.线程之间通信
+public class Thread2Test {
+    public static void main(String[] args) {
+        Numbers numbers = new Numbers();
+        Thread thread1 = new Thread(numbers);
+        Thread thread2 = new Thread(numbers);
+        thread1.setName("线程1 ");
+        thread2.setName("线程2 ");
+        thread1.start();
+        thread2.start();
+    }
+}
+/**
+ * wait:一旦执行此方法，则该线程阻塞，并且释放该同步监听器(锁)
+ * notify:一旦执行此方法，则唤醒另一个wait线程。多个wait线程，唤醒优先级高的
+ * notifyAll:一旦执行此方法，则唤醒所有wait线程。
+ *  注意：
+ *      wait,notify,notifyAll的通信必须是在synchronized同步块或者同步方法中使用。
+ *      wait,notify,notifyAll的通信的调用者必须是synchronized同步块或者同步方法中同步监听器(锁)，否则报InterruptedException
+ *      wait,notify,notifyAll是java.lang.Object的方法
+ **/
+class Numbers implements Runnable{
+    private int num = 1;
+    @Override
+    public void run() {
+        while (true){
+            synchronized (this){//线程安全
+                //唤醒另一线程
+                notify();
+                if (num <= 100){
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName()+":"+num);
+                    num++;
+                    //线程阻塞
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    break;
+                }
+            }
+        }
+    }
+}
+42.sleep和wait方法区别
+	相同点：方法都可以实现阻塞
+	不同点：1.sleep是Thread的方法，wait是object的方法
+			2.sleep可以使用在任何位置，wait方法必须使用在同步块或者同步方法中
+			3.是否释放锁(同步监听器),在同步块或者同步方法中，sleep不释放，wait释放锁。
+43.callable与其他线程的区别
+	有返回值；可以抛出异常；支持泛型
+44.多线程的优点
+	提高响应速度；降低资源消耗；便于线程管理
+45.String面试题
+public class StringTest {
+    String str = new String("good");
+    char[] chars = {'t','e','s','t'};
+    public void change(String str,char[] chars){
+        str = "test ok";
+        chars[0] = 'b';
+    }
+
+    public static void main(String[] args) {
+        StringTest stringTest = new StringTest();
+        stringTest.change(stringTest.str,stringTest.chars);
+        System.out.println(stringTest.str); 
+        System.out.println(stringTest.chars);
+		test();
+    }
+	public static void test(){
+        String s1 = "hello";
+        String s2 = "world";
+        String s3 = "hello"+"world";
+        String s4 = s1+"world";
+        final String s5 = "hello";//常量，存放在常量池中
+        String s6 = s5+"world";
+        System.out.println(s3==s4);
+        System.out.println(s3==s6);
+    }
+}
+46.string与char[],byte[],包装类型之间的相互转换
+ public static void main(String[] args) throws UnsupportedEncodingException {
+        // String——>包装类型
+        String number = "123";
+        int number1 = Integer.parseInt(number);
+        //int——>String
+        String strNumber = String.valueOf(number1);
+        //String——char[]
+        String st1 = "hello";
+        char[] chars = st1.toCharArray();
+        //char[]——>String
+        char[] chars1 = {'t','e','s','t'};
+        String str1 = new String(chars1);
+        //String ——bytes
+        String username = "abc中国";
+        byte[] bytes1 = username.getBytes();//默认是UTF-8编码,一个汉字占3个字节
+        for (int i = 0; i < bytes1.length; i++) {
+            System.out.printf(bytes1[i]+"\t");
+        }
+        System.out.println();
+        byte[] bytes2 = username.getBytes("gbk");//gbk编码，一个汉字占2个字节
+        for (int i = 0; i < bytes2.length; i++) {
+            System.out.printf(bytes2[i]+"\t");
+        }
+        System.out.println();
+        // byte[] ——>String
+        String userName1 = new String(bytes1);
+        System.out.println(userName1);
+        String userName2 = new String(bytes2,"gbk");
+        System.out.println(userName2);
+    }
+47.string的相关算法题
+	abcdefd字符串中其中cde反转的相关实现
+	abdedafs字符串中其中指定字符串a出现的次数
+	abcedfhellodes和teazhello的最大相同字符串是什么的
+	 public static void main(String[] args) {
+        String str = "abcdefgabab";
+        System.out.println(""+getReverse(str,2,5));
+        System.out.println(""+getReverse1(str,2,5));
+        System.out.println(""+getReverse2(str,2,5));
+        System.out.println(getCount(str,"ab"));
+        System.out.println(getMaxSameString("abcdhello1ttt","abhello1"));
+        test();
+    }
+
+    //反转方法一：string.toCharArray();
+    public static String getReverse(String mainStr,int startIndex,int endIndex){
+        if (mainStr != null) {
+            char[] chars = mainStr.toCharArray();
+            for (int x = startIndex,y=endIndex; x <= y; x++,y--) {
+                char temp = chars[x];
+                chars[x] = chars[y];
+                chars[y] = temp;
+            }
+            return  new String(chars);
+        }
+        return  null;
+    }
+    //反转方法二：分段
+    public static String getReverse1(String mainStr,int startIndex,int endIndex){
+        if (mainStr != null) {
+            //first
+            String reverse = mainStr.substring(0,startIndex);
+            //second
+            for (int x = startIndex,y=endIndex; y>=x ; y--) {
+                reverse += mainStr.charAt(y);
+            }
+            //third
+            reverse += mainStr.substring(endIndex+1);
+            return  reverse;
+        }
+        return  null;
+    }
+    //反转方法三：分段,使用StringBuffer优化
+    public static String getReverse2(String mainStr,int startIndex,int endIndex){
+        if (mainStr != null) {
+            StringBuffer stringBuffer = new StringBuffer(mainStr.length());
+            //first
+            stringBuffer.append(mainStr.substring(0,startIndex));
+            //second
+            for (int x = startIndex,y=endIndex; y>=x ; y--) {
+                stringBuffer.append(mainStr.charAt(y));
+            }
+            //third
+            stringBuffer.append(mainStr.substring(endIndex+1));
+            return  stringBuffer.toString();
+        }
+        return  null;
+    }
+    //查询subStr在mainStr出现的次数
+    public static int getCount(String mainStr,String subStr){
+        int mainLength = mainStr.length();
+        int subLength = subStr.length();
+        int count = 0;
+        int index = 0;//索引
+        if (mainLength>=subLength){
+            // while ((index=mainStr.indexOf(subStr))!=-1) {
+            //     count++;
+            //     mainStr = mainStr.substring(index+subLength);
+            // }
+            while ((index=mainStr.indexOf(subStr,index))!=-1) {
+                count++;
+                index += subLength;
+            }
+            return count;
+        }else {
+            return 0;
+        }
+    }
+    public static String getMaxSameString(String str1,String str2){
+        String maxString = str1.length()>=str2.length()? str1:str2;
+        String minString = str1.length()<str2.length()? str1:str2;
+        int length = minString.length();
+        for (int i = 0; i < length; i++) {
+            for (int x = 0,y = length-i;y<length;x++,y++){
+                String subString = minString.substring(x);
+                if (maxString.contains(subString)){
+                    return subString;
+                }
+            }
+        }
+        return  null;
+    }
+    //经典mainstream题
+    public static void test(){
+        String str = null;
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(str);
+        System.out.println(stringBuffer.length());
+        System.out.println(stringBuffer);
+        StringBuffer stringBuffer1 = new StringBuffer(str);
+        System.out.println(stringBuffer1.length());
+        System.out.println(stringBuffer1);
+    }
+48.jdk1.8的时间工具
+	时间可变，改为不可变
+	旧的需要偏移量
+	simpledateformat只能修饰date
+	线程安全 
+	LocalDate,LocalTime,LocalDateTime,Instant,DateTimeFormat
+49.注解
+	内置注解：@Override,@Deprecated,@SuppressWarnings
+	自定义注解：
+		1).使用@interface修饰
+		2).可以使用String value();
+		3).可以设置默认值
+		4).没有设置value(),仅仅起到标记作用
+@MyAnnotaion
+enum GoodsStatus{
+    BUY("buy"),SEND("send"),RECEIVE("receive");
+    private final String status;
+    private GoodsStatus(String status){
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+}
+//RetentionPolicy.SOURCE在生成.class文件抛弃
+//RetentionPolicy.CLASS在.claas文件有
+//RetentionPolicy.RUNTIME在运行时有效，可以反射调用
+@Retention(RetentionPolicy.RUNTIME)
+@Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE,TYPE_PARAMETER,TYPE_USE})
+@Documented
+@Inherited
+@interface MyAnnotaion{
+    String value() default "hello";
+}
+	元注解：annotation注解解释说明的注解
+		@Retention 注解的生命周期，有RetentionPolicy.Source,*.Class,*.Runtime
+			其中默认为RetentionPolicy.CLASS,如果要使用反射必须是RetentionPolicy.RUNTIME
+		@Target 注解的范围
+		@Documented 使用该注解，有文档生成
+		@Inherited，使用该注解，表示子类可以继承该注解
+50.使用数组的缺点
+	初始数组后，长度固定，不可变
+	数组方法有限，很多功能需要自己实现
+	存储方式连续(有序)可以重复，如果实现无序和不可重复不能实现。
+51.Arrays.asList()方法使用注意
+		List<int[]> ints = Arrays.asList(new int[]{1, 2, 3, 4});
+        System.out.println(ints);//注意输出的地址
+        List<Integer> integers = Arrays.asList(new Integer[]{1, 2, 3});
+        System.out.println(integers);
+52.集合迭代器iterator的使用
+	hasNext：判断是否有下一个元素
+	next：指针下移；返回当前元素
+	iterator()，每次调用之前都会重新生成一个全新的迭代器
+	//下面的代码错误，死循环
+	while(colletion.iterator().hasNext()){
+		
+	}
+53.foreache增强循环的使用注意事项
+		String[] strs = new String[]{"MM","MM","MM"};
+        for (String st:strs){
+            st = "GG";
+        }
+		for (int i = 0; i < strs.length; i++) {
+            System.out.println(strs[i]);
+        }
+        for (int i = 0; i <strs.length; i++) {
+            strs[i] = "GG";
+        }
+        for (int i = 0; i < strs.length; i++) {
+            System.out.println(strs[i]);
+        }
+54.集合list实现Arraylist,LinkedList,Vector的异同
+	相同：
+		都实现list接口，实现可以有序可重复数据
+	不同：
+		ArrayList:主要实现接口，jdk1.2的功能，线程不安全，效率高，底层使用数组Object[] elementData,默认扩容1.5倍，默认容量10
+		LinkedList:jdk1.2的功能，线程不安全，底层使用链表实现，在增加和删除元素要比ArrayList效率高
+		Vector:jkd1.0的功能，古老接口，线程安全，效率低，底层使用数组Object[] elementData，默认扩容2倍，默认容量10
+55.经典面试 
+	public static void get(){
+		HashSet hashSet = new HashSet();
+        Person p1 = new Person("AA",18);
+        Person p2 = new Person("BB",20);
+		hashSet.add(p1);
+        hashSet.add(p2);
+        p1.setName("CC");
+        hashSet.remove(p1);
+        System.out.println(hashSet);
+        hashSet.add(p1);
+        System.out.println(hashSet);
+        hashSet.add(new Person("AA",18));
+        System.out.println(hashSet);
+	}
+56.hashtable,hashmap,linkedhanmap,treepmap的区别
+	hashmap:线程不安全，效率高，key和value可以存放null,新功能，主要功能
+	linkedhashmap：线程不安全，可以按照添加顺序排序，查询效率高
+	treepmap：按照指定可以自然排序和定制排序
+	hashtable：古老接口，线程安全，效率低，key和value可以不存放null
+57.泛型类
+	异常类不能声明泛型
+	泛型类中静态方法不能使用泛型
+	T[] t = new T[10];----错误
+	T[] t = (T[])new Object[10];
+58.流
+	数据单位：字节流，字符流
+	流的方向：输入流，输出流
+	角色：节点流，处理流
+59.静态代理和动态代理
+	编译期间已经确定是静态代理，只有运行期间确定的是动态代理，灵活。
+public class StaticProxyTest {
+    public static void main(String[] args) {
+        NikeCloth nikeCloth = new NikeCloth();
+        ProxyCloth proxyCloth = new ProxyCloth(nikeCloth);
+        proxyCloth.productCloth();
+        System.out.println("******************");
+        SuperMan superMan = new SuperMan();
+        Human proxyFactory = (Human) ProxyFactory.getProxyFactory(superMan);
+        String belief = proxyFactory.belief();
+        System.out.println(belief);
+        proxyFactory.eat("fruit");
+        System.out.println("-----------");
+        ClothInterFace proxyFactory1 = (ClothInterFace) ProxyFactory.getProxyFactory(nikeCloth);
+        proxyFactory1.productCloth();
+    }
+}
+
+interface ClothInterFace{
+    void productCloth();
+}
+//代理类
+class ProxyCloth implements ClothInterFace{
+    private ClothInterFace clothInterFace;
+    public ProxyCloth(ClothInterFace clothInterFace){
+        this.clothInterFace = clothInterFace;
+    }
+    @Override
+    public void productCloth() {
+        System.out.println("开始调用代理生产产品");
+        clothInterFace.productCloth();
+        System.out.println("生产制造完毕");
+    }
+}
+class NikeCloth implements ClothInterFace{
+    @Override
+    public void productCloth() {
+        System.out.println("开始制造一批Nike运动衣");
+    }
+}
+//动态代理方式：
+interface Human{
+    String belief();
+    void eat(String food);
+}
+//被代理类
+class SuperMan implements Human{
+    @Override
+    public String belief() {
+        return "I believe I can fly.";
+    }
+
+    @Override
+    public void eat(String food) {
+        System.out.println("I love food is:"+food);
+    }
+}
+//动态代理类
+class ProxyFactory{
+    public static Object getProxyFactory(Object object){
+
+        return Proxy.newProxyInstance(object.getClass().getClassLoader(), object.getClass().getInterfaces(), new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return method.invoke(object,args);
+            }
+        });
+    }
+}

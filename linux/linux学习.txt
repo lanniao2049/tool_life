@@ -1,0 +1,686 @@
+﻿linux 学习
+
+root用户 #超级用户
+普通用户 $
+
+ls -l(ll)
+ls -a
+ls -lh (显示具体大小kb,m,g)
+ls -h
+ls -n
+ls -i(inode)
+ls -d
+
+pwd (print working directory)
+
+目录
+mkdir -p test/check
+cd - 进入到上次目录
+cd .. 进入到上一级目录
+cd . 进入当期目录
+
+cd c (按tab键，补全以c开头的目录)
+
+cp -r(目录)
+cp -p(文件)
+cp -d(链接)
+cp -a (相当于pdr) 完全复制（包括文件隐藏属性）
+
+/bin /sbin /usr/bin /usr/sbin 存放系统命令，其中bin是放的命令普通用户都可以执行，sbin只用root用户可以执行
+/boot
+/etc 配置文件目录
+/lib linux函数库
+/sys /proc 内存挂载点，不能修改
+/tmp 临时目录
+
+软链接和硬链接
+硬链接是相同的inode，软链接是不同的inode,删除原有文件，则软链接失效
+ln 1 1.txt ---硬链接，相同的inode值
+ln -s 1 2.txt ---软链接，不同的inode值，删除原有文件，则软链接失效
+
+locate 查找命令是从linux数据库中查找的(/var/lib/mlocate/mlocate.db)，而数据是每天一更新
+locate text.txt 
+如果要马上查找的到，必须执行updatedb命令更新到数据库才可以查询到
+
+查看当前系统的级别
+	runlevel
+查看当前系统的运行级别
+	/etc/inittab
+	如何修改程序的运行级别
+	
+whereis ls ----查看操作指令所在位置及帮助文档路径
+which ls ----查看操作指令所在位置及别名	
+w命令---查看当前登录用户及操作
+whoami---显示当前用户
+who命令---查看当前登录用户
+last命令---查看历史登录信息
+lastlog命令
+
+shell命令
+	echo $SHELL ----查看当前系统的shell
+	cat /etc/shells	-----查看当前系统支持的shell
+
+find 命令
+	波浪号~代表了$HOME的目录
+	find ~ -name "*.txt" -print
+	当前目录下查找
+	find . -name "*.txt" -print
+	当前目录下查找文件名以一个大写字母开头的文件
+	find . -name "[A-Z]*" -print
+	find /etc -name "host*" -print
+	find . -name "*" -print ---查找任意文件
+	find / -name "*" -print
+	find / -name "*[ab]" -print ---查找任何以a或b结尾的文件
+	find / -iname "a*" -print ---忽略大小写
+	find . -name "[a-z][a-z][0-9][0-9].txt" -print
+	
+	find . -perm 755 -print  --当前目录下查找具有755的文件
+	
+	find / -user root -print
+	find . -user dmadmin -print
+	find . -nouser -print
+	find / -group dba -print
+	find / -nogroup -print
+	查询修改时间范围内的文件 -mtime +10 10天以上，-2 2天以内
+	find . -mtime +10 -print  ---mtime(modity time) 修改文件内容
+	find / -mtime -2 -print
+	find / -atime -2 -print  ---atime(accept time),2天访问的文件
+	查询指定的文档类型文件
+	find / -type d -print
+	find . -type l -print
+	find . -type f -print 
+	查询指定的大小的文件  
+	find . -size +100k -print
+	find /etc -size -1G -print
+	find . -size 10M -print
+	find . -size +1M -a -size -10M -print  ----其中 -a(and)
+	find . -size +10k -a -name "*.log" -print
+	find . -size 1M -o -size 10M -print ----其中 -o(or)
+	
+	find . -name "*.log" -size +100M -exec ls -l {} \;
+	find . -size +10M -a -name "*.log*" -exec ls -lh {} \;
+	find . -user root -print |xargs ls -l|wc -l
+	
+	stat ***.txt ---查看文件的inode信息
+	 
+	可以使用星号*匹配文件名中任何字符串
+	ls app*
+	cd config/sys*/*
+	find . -name "*.log"
+	
+	使用?可以匹配文件名中的任何单个字符串
+	ls app?*
+	ls [a-z]*.txt 
+	ls [A-Z]*.txt 
+	ls [1-9]*.txt 
+	ls [!1-9]*.txt
+	find . -name "??n.sh" -print
+	
+	如果前面执行成功，则执行后面命令
+	cp run.sh run.sh.bak && echo "Success"
+	cp run.sh run.sh.bak && rm run.sh
+	如果前面执行失败，则执行后面命令
+	cp test.file test.file.bak || echo "Cp faile!"
+	---------------------------
+	alias rm ---查看rm的别名
+	alias ----查看所有别名
+	alias vi='vim' ---设置vim的别名
+	如果别名要永久生效，则需要修改.bashrc文件，然后执行source .bashrc命令即可
+	---------------------------
+	history命令
+	history
+	history 20 显示最近20行的历史命令
+	!1074 显示编号为1074的执行命令
+	history -w 把缓存中的历史命令写入历史命令文件中./.bash_history
+	history -c 清空历史命令
+	.bash_history 记录上次登录执行的命令
+	历史命令保存条数，默认是1000条
+	/etc/profile
+	HISIZE=1000
+	
+	tab键补全命令
+	
+	重定向
+	ifconfig > test.log 覆盖
+	ifconfig >> test.log 追加
+	ifconfig 2>test.log 错误信息覆盖（注意空格）
+	ifconfig 2>>test.log 错误信息追加（注意空格）
+	ifconfig >> test.log 2>&1 错误和正确都追加
+	ifconfig & >> test.log 错误和正确都追加
+	ifconfig >>test.log 2>>error.log
+	
+	wc
+	wc -c test.log 统计文件字节数
+	wc -w test.log 统计文件单词数
+	wc -l test.log 统计文件行数
+	
+	
+	
+	多命令执行顺序
+	ls;pwd;date多个命令执行顺序，不存在任何逻辑关系
+	&& 多个命令执行顺序，只有都为后面正确才执行
+	|| 多个命令执行顺序
+	
+	date
+	date "+%Y-%m-%d %H:%M:%S" 显示当前时间
+	date "+%Y"
+	date "+%m"
+	
+	cal 2020 查看2020年日历
+	
+	管道符
+	netstat -an|grep 18003|wc -l 前一个的命令执行结果是第二个命令的执行对象
+	
+	vi + test.txt
+	vi +2 test.txt
+	vi /imooc test.txt
+		dd,删除光标所在行
+		yy,负责光标行到缓存中
+		p,粘贴负责内容
+		gg,到文件头一行
+		GG,到文件最后一行
+		$,到文件某行行尾
+		^,到文件某行行头
+		n,移动到下一个
+		N,移动到上一个
+		在正常模式下显示行号  :set num 
+	
+	df -l
+	df -a 所有资源的使用情况
+	df -h  1024合适大小显示
+	df -H 1000进制显示
+	df -T 资源类型
+	df -laT
+	df -i inode使用情况
+	
+	du 统计磁盘文件大小
+	du -k kb
+	du -m mk
+	du -h 1024合适的大小
+	du -H 1000合适的大小
+	du -s 统计指定目录
+	du -sh
+	du -lsh *
+	du -lsh dfclib
+	du -lsh boc_*
+	
+	主分区和扩展分区最多4个，且扩展分区最多一个，而扩展分区可以分为多个逻辑分区，扩展分区不能直接使用，只有分为逻辑分区才可以使用。
+	linux磁盘空间不够，新增空间
+	fdisk -l
+	
+	fdisk /dev/sdb   ---分配分区
+	Command (m for help):m --帮助 
+	n ---add a new partition创建分区
+	p   print the partition table
+	w  ---写分区
+	
+	parted 
+	
+	gpt分区方法
+	
+	格式化（只能格式化主分区和逻辑分区）
+	mkfs ext3 /dev/sdb1
+	mkfs ext4 /dev/sdb2
+	单独挂载
+	mount /dev/sdb1 /mnt/imooc
+	mount /dev/sdb2 /mnt/imooc
+	umount /mnt/imooc
+	查看挂在点
+	mount
+	挂载
+	 在/etc/fstab下新增新的挂载点，开机自动生效。
+	 
+	交换分区
+	  新建一个普通分区
+	  修改普通分区（主分区或者逻辑分区）的id类型为82
+	  格式化交换分区  mkswap /dev/sdb5
+	  启用交换分区 
+		swapon /dev/sdb5
+	  卸载交换分区
+		swapoff /dev/sdb5
+	  查看交换分区分配
+		free
+		
+	用户和用户组
+		/etc/group 存储当前系统所有用户组信息
+			dba:x:502:oracle   （组名：组密码占位符：组编号：组内用户），如果组内用户名和组名一致，组内用户名可以省略，手动创建的组的编号从500开始
+		/etc/gshadow 存储当前系统所有用户组的密码信息 
+			dba:!::oracle (组名：组真实密码：组管理者：组内用户)，如果为！则为空（既没有密码）
+		/etc/passwd 存储当前系统所有用户信息（7位）
+			dmadmin:x:500:500:dmadmin:/home/dmadmin:/bin/bash
+			oracle:x:501:501::/home/oracle:/bin/bash
+			（用户名：密码占位符：用户编号：用户组编号：用户名注释：主目录：shell类型）
+		/etc/shadow 存储当前系统所有用户密码信息
+		
+		用户组
+			groupadd man  新增用户组 
+			groupmod -n superman man 修改man组为superman
+			groupmod -g 666 superman 修改superman组编号为666
+			groupadd -g 888 supe   新增用户组且指定组编号
+			groupdel market ---删除组
+		用户 
+			useradd -g boss lanniao
+			useradd -d /home/xxx lanniao
+			useradd -d /home/lanniao -g lanniao -G root -u 505 lanniao(-d 家目录，-g组，-G附属组，-u指定uuid值)
+			usermod -l ljl lanniao  修改lanniao为ljl
+			usermod -d /home/ljl ljl 
+			usermod -c dgdzp jzmb --修改备注
+			usermod -L dmadmin --锁定用户
+			usermod -U dmadmin --解除锁定用户
+			usermod -g superman boss 修改boss组为superman
+			userdel ljl 
+			userdel -r ljl 删除该用户及用户下所有内容
+			
+			
+			passwd -l ljl 停止用户使用
+			passwd -u ljl 启用停止用户
+			passwd -d ljl 清除用户，可以无密码登录
+			
+			gpasswd -a cls boss --添加到附属组
+			gpasswd -d cls boss --从附属组中删除
+			chfn dmadmin ---交互设置dmadmin用户信息
+			finger dmadmin  --显示dmadmin用户信息
+			
+			touch /etc/nologin 禁止除了root用户外的用户登录
+			
+	网络
+		OSI七层协议
+			应用层
+			表示层
+			会话层
+			传输层
+			网络层
+			数据链接层
+			物理层
+		TCP/IP四层协议
+			应用层
+			传输层（TCP/UDP）
+			网络层
+			网络接口层
+	cmd中
+		arp -a (arp(address resolution protocol)协议，mac地址，局域网)
+		
+	常见端口
+		FTP(文件传输协议)：端口号 20 21
+		SSH(安全shell协议)：端口号 22
+		telnet(远程登录协议)：端口号 23（建议不要开启，因为是明文登录，数据可以截取）
+		DNS(域名系统)：端口号 53
+		http(超文本传输协议)：端口号 80
+		SMTP(简单邮件传输协议)：端口号 25
+		POP3(邮局协议3代)：端口号 110
+		查看所有端口
+			netstat -an
+		listening       ----监听
+		established     ---正在连接
+		netstat -an|grep ESTABLISHED|wc -l
+		netstat -tuln(t,tcp,  u,udp, l,list,) 
+		netstat -rn  --查看网关
+		route -n --查看网关
+		nslookup www.baidu.com  --查看域名
+		nslookup ---查看本机的dns
+		   server---查看本机的server
+		ping 192.168.1.3 -c 3 (ping 3次)
+		traceroute www.163.com ----路由跟踪命令
+	网络地址分类
+		A类地址
+			1.0.0.0——126.255.255.255 
+			子网掩码 255.0.0.0
+			私网地址：10.0.0.0-10.255.255.255
+			最大网络数2^7-2=126
+			最大主机数2^24-2(减去一个*.0.0.0和*.255.255.255的广播地址)
+		B类地址
+			128.0.0.0——191.255.255.255 
+			子网掩码 255.255.0.0.
+			私网地址: 172.16.0.0-172.31.255.255
+			最大网络数2^14
+			最大主机数2^16-2(减去一个*.*.0.0和*.*.255.255的广播地址)
+		C类地址
+			192.0.0.0——223.255.255.255 
+			子网掩码 255.255.255.0
+			私网地址: 192.168.0.0-192.168.255.255
+			最大网络数2^21
+			最大主机数2^8-2(减去一个*.*.*.0和*.*.*.255的广播地址)
+				
+	DNS
+		递归查询  ---客户机和DNS服务之间的交互，要么成功，要么失败，可以DNS请求发给其他的DNS服务器
+		迭代查询  ---DNS服务之间的交互，返回相似及最近的DNS
+		正向查询  ---域名到IP地址解析
+		反向查询  ---IP到域名解析(邮件服务)
+		
+		
+	/etc/resolv.conf 域名解析文件
+	
+	tcpdump -i etho -nnX port 21(必须是用root用户) --抓包工具
+		-i 指定网卡接口
+		-nn 将数据包中的域名与服务转为IP和端口
+		-X 以十六进制和ASCCII码显示数据包内容
+		port 指定监听的端口
+	
+	======================
+	head instanll.log -n 15,显示文件头部15行
+	tail install.log - n 10,实现文件尾部10行
+	grep java test.txt	
+	grep -i java test.txt ---i忽略大小写
+	grep -v java text.txt ---v 取反，不包含所含的行
+	grep -c java text.txt ---统计含java的行数
+	grep -n java text.txt ---统计含java所在的行号
+	grep "java a" test.txt
+	grep "*java*" test.txt
+	grep -c '^$' text.txt ---统计空行的总数
+	ls -l|grep '^d'----所有目录文件
+	ls -l|grep '^[^d]'---所有不是目录文件
+	cat test.txt|grep java
+	cat icms.log|more
+	cat icms.log|less
+	reboot，重新启动，仅仅使用root用户才有权限
+	halt 直接关机
+	shutdown -r now,重新启动，仅仅使用root用户才有权限
+	shutdown -h now,立刻关机，仅仅使用root用户才有权限
+	shutdown -h 10,10分钟后立刻关机，仅仅使用root用户才有权限
+	shutdown -r 10,10分钟后重启启动
+	注意:
+		关机时候首先使用sync同步内存数据到磁盘，然后在关机
+	
+	zip -r ttt.zip test test1 test2
+	unzip ttt.zip 解压原文件
+	ps -ef
+	ps aux
+	ps -le
+	pstree
+	pstree -up (user,pid)
+	---------
+	top -b -n 2>top.log ------ b(bat),n(number次数)
+	top 
+		-P,以CPU使用率排序，默认就是此项
+		-M,以内存的使用率排序
+		-N,以PID排序
+		-q,退出
+	缓存和缓冲的区别，缓存主要是为了内存的读，缓冲主要是为了硬盘的写	
+	
+	kill
+	pkill -9 -t pts/0  踢出其他用户的远程登录
+	killall -9 httpd 杀死httpd的所有进程
+	
+	Ctrl+z 暂停命令
+	jobs -l 查看job
+	fg%1 恢复前台暂停的命令，其中1是jobs -l排序第一的命令
+	bg%1 恢复后台暂停的命令，其中1是jobs -l排序第一的命令
+	
+	vmstat 1 3,其中1是刷新延时(s),3是刷新次数
+	
+	dmesg|grep CPU
+	
+	file /bin/bash ---查询操作系统
+	uname -a 
+	free -m
+	
+	tar -zcvf ttt.tar.gz tt.txt 
+	tar -zcvf ttt.tar.gz *.txt 
+	tar -zxvf ttt.tar.gz 
+	tar -zxvf ttt.tar.gz -C /home/dmadmin/test
+	wget http:/******.tar.gz
+	yum install **
+	yum remove **
+	yum list installed,显示安装过的介质
+	logout,注销
+	
+	lsb_release -a 查看系统版本信息
+	uname -a 查看内核版本信息
+	cat /proc/cpuinfo 查看cpu型号信息
+	cat /proc/memifno 查看内存信息
+	df -lh 查看磁盘空间情况
+	free -lm 查看内存使用
+	
+	nohup命令
+	nohup comman >nohup.out 2>&1 &
+	scp xxx.zip dmadmin@192.168.19.132:/home/dmadmin 上传
+	scp -r dmadmin@192.168.19.132:/home/dmadmin /home/dmadmin/test(本地路径)
+	id dmadmin 查看dmadmin的用户信息
+	ifdown eth0 禁用网卡
+	ifup eth0 启动网卡
+	chkconfig --list 查看所有的服务开机的开启状态
+	service network start
+	service network stop
+	service network restart
+	man ls ----帮助文档
+	快捷键
+	Ctrl+a  光标移动到命令行首
+	Ctrl+e  光标移动到命令行尾
+	Ctrl+l  清屏
+	Ctrl+c  强制终止当前命令
+	Ctrl+u  从光标所在位置删除到行首
+	Ctrl+r  从历史命令中搜索
+	
+	-------
+	虚拟机必须挂在ISO等驱动，且设备状态必须已连接和启动时连接
+	mkdir /mnt/cdrom  --创建光盘目录
+	mount /dev/sr0 /mnt/cdrom   ---挂在光盘
+	cd /mnt/cdrom/Packages  ---光盘rpm所在位置
+	
+	cd /var/lib/rpm/  ---安装rpm后台的搜索数据库位置
+	
+	rpm -ivh 包全名  --安装rpm
+		-i(install) --安装
+		-v(verbose) --显示详细信息
+		-v(hash)--显示进度
+	rpm -Uvh 包全名   ---更新rpm
+		-U(update)
+		
+	rpm -e 包名 --卸载
+		-e(erase)
+	
+	
+	rpm -q(query)httpd --查询包名是否安装
+	rpm -qa  查询全rpm
+	rpm -qi  查询包信息
+		-i(information)
+	rpm -qa|grep httpd 
+	rpm -qip zsh-4.3.10-7.el6.x86_64.rpm  --查询没有安装rpm的信息
+		-p(package)
+	rpm -ql httpd --查询rpm安装位置
+		-l(list)
+	rpm -qf 系统文件名 ----根据系统文件名查询属于的rpm
+	rpm -qf /usr/share/man/man1/ls.1.gz
+	rpm -qR httpd
+	rpm -qRp zlib-devel-1.2.3-29.el6.x86_64.rpm(包全名)  ---查询没有安装rpm依赖
+	
+	rpm -V httpd  --校验rpm 
+	rpm2cpio 包全名|cpio -idv .文件绝对路径  ---rpm包中文件提取
+		--rpm2cpio 将rpm包转换为cpio格式的命令
+		---cpio 标准工具
+	rpm2cpio /mnt/cdrom/Packages/coreutils-8.4-31.el6.x86_64.rpm |cpio -idv ./bin/ls
+	
+	/etc/yum.repos.d ---yum 源文件
+	使用驱动或者光盘安装yum的步骤
+	1.首先是CentOS-Base.repo 失效，及修改为 mv CentOS-Base.repo CentOS-Base.repo.bak
+	2.修改CentOS-Media.repo配置文件
+	name=CentOS-$releasever - Media
+	baseurl=file:///mnt/cdrom
+	#        file:///media/cdrom/
+	#        file:///media/cdrecorder/
+	gpgcheck=1(md5校验)
+	enabled=1(启用，0则是不用)
+	gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+	
+	yum list 查看可以安装的yum
+	yum search httpd --查看
+	yum search httpd
+	
+	yum -y install httpd(包名)  ---安装yum
+	yum -y install gcc
+	yum -y update xx ---更新，尽量不要使用
+	yum -y remov xxx ---卸载，尽量不要使用
+	
+	yum grouplist
+	yum groupupdate
+	yum groupremove
+	
+	/etc/rc.d/init.d/httpd start ---apache启动
+	/etc/rc.d/init.d/httpd stop ---apache停止
+	
+	
+	文件类型
+		d ---目录文件
+		- ---普通文件
+		l ---链接文件
+		b ---块设备文件
+		c ---字符设备文件
+		s ---套接字文件
+		p ---命名管道文件
+		
+	/etc/profile  默认权限
+		文件最大权限是666 rw-rw-rw-
+		目录最大权限是777 rwxrwxrwx
+		umask 0002  -------w-
+		umask 0022	----w--w-
+		文件最大权限-umask ==文件的权限
+	crontab -l ---查看crontab是否安装
+	service crond status --crontab 运行状态
+	*/2 * * * * date >>1.txt
+	1-59/2 * * * * date>>1.txt --奇数分钟运行
+	0 23-7/1 * * * date>>1.txt ---晚上23点到早上7点每一个小时执行一次
+	date;sleep 0.5s;date
+	/var/log/cron ----日志路径
+	/var/spool/cron/dmadmin  ---crontab -e实际编辑的脚步位置
+	
+	/etc/rc.local ----修改开机启动，可以在此文件中添加其他开机启动命令
+	
+	echo命令
+	echo -e "this is echo's 3 new line\n\n\n"  ---linux必须是用-e转义
+	echo "$LOGNAME carried them out at `date`"
+	echo "\"/home/dmadmin"\" ---注意转义符号
+	
+	echo "date=`date`" ----反单引号
+	echo "date=$(date)"
+	
+	tee命令
+	date |tee test.txt
+	date |tee -a test.txt ---a(apend)
+	
+	[root@app01 ~]# cat >>myfile <<EOF
+	> Hello there I am using a $TERM terminal
+	> any my user name is $LOGNAME
+	> bye ..
+	> EOF
+	
+	
+	配置文件信息
+	----etc是所有用户生效
+	/etc/profile
+	/etc/profile.d/*.sh
+	------家目录，各个用户生效
+	~/.bash_profile
+	~/.bashrc
+	/etc/bashrc 
+	
+	/etc/issue 本地终端警告信息
+	/etc/issue.net 远程终端警告信息
+	/etc/motd  登录后警告信息，建议信息填写到这里 
+	
+	echo "$name"456 ---变量的叠加
+	export PATH=$PATH:/root/bin ----变量的叠加
+	
+	set -----查询系统下所有变量
+	unset name ----取消变量名称
+	env ---当前环境变量
+	
+	locale ---当前语系
+	locale -a|more ---当前支持的所有语系 
+	/etc/sysconfig/i18n --下次登录使用的语系
+	
+	$n ----其中$0表示当前命令，$1-9 表示输入的第几个参数
+	$* ----整体对待
+	$@ -----参数分开对待
+	$# -----表示参数个数
+----传参数加
+touch test.sh 
+#/bin/bash
+num1=$1
+num2=$2
+sum=$(($num1+$num2))
+echo "$sum"
+
+-----------
+touch ck.sh
+#/bin/bash 
+for i in "$*"
+	do
+		echo $i
+	done
+echo "--------"
+for y in "$@"
+	do 
+		echo $y 
+	done
+ehco "--------"
+echo "$#"
+	
+	$? ----表示当前命令是在执行正确，0表示正常，其他表示执行失败
+	echo $?
+	$$ ----表示当前进程的PID
+	echo $$
+	ps -aux|grep 3293
+	$! ----表示后台最后一个进程的PID
+	echo $!
+	
+	read命令
+	-p 提示信息，只有输入才进行下一个命令，否则一直等待
+	-t 等待时间，秒，超过时间不在等待
+	-s 隐藏输入的数据
+	-n 字符数，只接受指定的字符数
+---例子
+[dmadmin@app01 sh]$ cat infor.sh 
+#!/bin/bash
+read -p "please input your name:" -t 10 name
+echo -e "\n"
+echo $name
+read -p "please input your password:" -s pwd
+echo -e "\n"
+echo $pwd
+read -p "please input choose your sex[M,W]:" -n 1 sex
+echo -e "\n"
+echo $sex
+	
+	declare 声明变量类型
+		-:给变量设定类型属性
+		+:取消变量的类型属性
+		-a: 声明为数组
+		-i: 声明为数值
+		-p:显示指定变量的声明类型
+		-r:将变量声明设置为只读
+		-x:将变量声明为环境变量
+		
+	declare -i c=$a+$b
+	declare -p ---查看变量
+---例子 
+[dmadmin@app01 sh]$ move[0]=zp
+[dmadmin@app01 sh]$ move[1]=tp
+[dmadmin@app01 sh]$ declare -a move[2]=live
+[dmadmin@app01 sh]$ echo ${move}
+zp
+[dmadmin@app01 sh]$ echo ${move[2]}
+live
+[dmadmin@app01 sh]$ echo ${move[*]}
+zp tp live
+[dmadmin@app01 sh]$ 
+查询磁盘情况
+lsblk
+lsblk -f 
+lsblk -l
+lsblk -lf 
+查询指定目录下的文件个数
+ls -l /home/dmadmin |grep "^-" |wc -l 
+查询指定目录下的文件个数(包含所有子目录)
+ls -lR /home/dmadmin |grep "^-" |wc -l 
+查询指定目录下的目录个数
+ls -l /home/dmadmin |grep "^d" |wc -l 
+查询指定目录下的目录个数(包含所有子目录)
+ls -lR /home/dmadmin |grep "^d" |wc -l 
+
+
+多行注释
+:<<!
+echo "date=`date`"
+echo "path=$PATH"
+!
+
