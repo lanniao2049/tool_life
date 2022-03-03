@@ -1,0 +1,4 @@
+cmd命令
+	首先输入wmic，然后在输入memorychip，查询内存信息
+	查看目录结构，tree /f
+	

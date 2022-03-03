@@ -1,0 +1,21 @@
+
+精通Java语言，多年开发经验
+熟悉Spring/SpringBoot/Hibernate/Ibatis/mybatis/SpringMVC等类似的开发框架；
+熟悉oracle/MySQL数据库，具有数据库的开发经验,熟练编写存储过程、触发器、事务等机制以及熟悉数据库优化
+有良好的原生JavaScript基础，熟悉jQuery，熟悉Bootstrap框架；
+熟练掌握Redis、memcache等缓存技术以及ActiveMQ等消息队列；
+熟练掌握JBoss、Tomcat，WebLogic，WebSphere等中间件；
+熟悉git，svn、maven等管理工具；
+熟悉分布式环境开发，有一定的网络服务通讯编程能力
+熟悉Web前端技术，能熟练使用html、css、JavaScript、ajax、json、jQuery,JSP等进行开发；
+熟练掌握XML体系技术（XML、XSD、XSLT、WSDL），能够熟练应用；
+熟悉Linux操作系统，常见命令及优化；
+熟练掌握常用面向对象设计模式了解数据仓库设计；
+熟悉使用Viso，Rose，PD等建模工具；
+了解Redis，MongoDB，Hadoop等Nosql技术，具有Hadoop API开发经验者优先；
+熟悉权限、工作流、报表等通用模块的详细设计；
+熟悉主流的大数据存储分析、高并发访问处理方案；
+擅长技术文档的编写(系统分析、数据库设计，系统设计等)、具有使用UML进行分析设计工作经验者优先；
+具备良好的人际交往、语言表达和沟通能力；
+具备较强的学习能力、技术研究能力。
+
