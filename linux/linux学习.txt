@@ -3,7 +3,7 @@
 root用户 #超级用户
 普通用户 $
 
-ls -l(ll)
+ls -l(ll long list)
 ls -a
 ls -lh (显示具体大小kb,m,g)
 ls -h
@@ -41,6 +41,13 @@ ln -s 1 2.txt ---软链接，不同的inode值，删除原有文件，则软链�
 locate 查找命令是从linux数据库中查找的(/var/lib/mlocate/mlocate.db)，而数据是每天一更新
 locate text.txt 
 如果要马上查找的到，必须执行updatedb命令更新到数据库才可以查询到
+/etc/updatedb.com配置文件
+
+PRUNE_BIND_MOUNTS = "yes"
+PRUNEFS = "9p afs anon_inodefs auto autofs bdev binfmt_misc cgroup cifs coda configfs cpuset debugfs devpts ecryptfs exofs fuse fuse.sshfs fusectl gfs gfs2 gpfs hugetlbfs inotifyfs iso9660 jffs2 lustre mqueue ncpfs nfs nfs4 nfsd pipefs proc ramfs rootfs rpc_pipefs securityfs selinuxfs sfs sockfs sysfs tmpfs ubifs udf usbfs fuse.glusterfs ceph fuse.ceph"
+PRUNENAMES = ".git .hg .svn"
+PRUNEPATHS = "/afs /media /mnt /net /sfs /tmp /udev /var/cache/ccache /var/lib/yum/yumdb /var/spool/cups /var/spool/squid /var/tmp /var/lib/ceph"
+
 
 查看当前系统的级别
 	runlevel
@@ -78,13 +85,14 @@ find 命令
 	
 	find / -user root -print
 	find . -user dmadmin -print
-	find . -nouser -print
+	find . -nouser -print  --查找没有所有者的文件(内核文件和外来文件如光驱等除外)
 	find / -group dba -print
 	find / -nogroup -print
 	查询修改时间范围内的文件 -mtime +10 10天以上，-2 2天以内
 	find . -mtime +10 -print  ---mtime(modity time) 修改文件内容
 	find / -mtime -2 -print
-	find / -atime -2 -print  ---atime(accept time),2天访问的文件
+	find / -atime -2 -print  ---atime(accept time),2天访问的文件	
+	find / -ctime +10 -print ---ctime(change time)
 	查询指定的文档类型文件
 	find / -type d -print
 	find . -type l -print
@@ -101,6 +109,7 @@ find 命令
 	find . -size +10M -a -name "*.log*" -exec ls -lh {} \;
 	find . -user root -print |xargs ls -l|wc -l
 	
+	find . -inum 26647  --查找inode的文件
 	stat ***.txt ---查看文件的inode信息
 	 
 	可以使用星号*匹配文件名中任何字符串
@@ -378,6 +387,7 @@ find 命令
 	shutdown -h now,立刻关机，仅仅使用root用户才有权限
 	shutdown -h 10,10分钟后立刻关机，仅仅使用root用户才有权限
 	shutdown -r 10,10分钟后重启启动
+	shutdown -c 取消前一个关键命令
 	注意:
 		关机时候首先使用sync同步内存数据到磁盘，然后在关机
 	
@@ -442,7 +452,11 @@ find 命令
 	service network start
 	service network stop
 	service network restart
-	man ls ----帮助文档
+	man ls ----帮助文档(man manual)
+	man -5 passwd
+	man -f null
+	man -f passwd 显示passwd 各个等级帮助
+	
 	快捷键
 	Ctrl+a  光标移动到命令行首
 	Ctrl+e  光标移动到命令行尾
