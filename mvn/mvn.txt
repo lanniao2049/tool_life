@@ -1,0 +1,140 @@
+mvn命令
+	在3.6以上的版本中只用在win10中设置path即可(添加例如：D:\software\apache-maven-3.6.1\bin)
+	mvn如何导入依赖，在mvnrepository网址查找相应的依赖然后添加到pom.xml中
+	mvn如何添加依赖插件,在maven.apache.org官网找到plugins，然后查找相应的依赖，比如tomcat
+	mvn中web项目
+		依赖需要添加servlet,jsp
+		插件需要添加tomcat
+		运行方式有两种(Edit configurations——> "+"选项)
+			1.使用maven方式，在Command line命令中写入tomcat7:run(注意该tomcat版本需要和依赖的插件一致)
+			2.使用tomcat方式，在Deployment中添加运行的web项目
+	mvn中的pom.xml（project object model或者package object manager）
+	mvn中的项目结构
+		src(source)
+			main
+				java
+				resource
+				webapp
+					WEB-INFO
+						web.xml
+					index.jsp
+			test
+				java
+				resource
+		target
+		pom.xml
+	idea中mvn的重新加载即reload或者reimport
+	在全局变量setting.xml中配置默认的1.8jdk
+	配置文件的优先级
+		pom.xml>settings.xml(maven全局配置文件)
+	mvn常见命令
+		mvn -version
+		mvn clear 清空 target
+		mvn compile 在target中生成字节码文件
+		mvn package 在target中生成jar或war等
+		mvn tomcat:run
+		mvn test
+		mvn site 报表
+		mvn install 安装到本地库
+		mnv deploy 发布到远程库或者私有库
+	manven中的生命周期
+		clear lifecycle
+			pre clear
+			clear
+			post clear
+		default lifecycle(重点)
+			compile->package(包含test)->install->deploy
+		site lifecycle
+			站点发布等相关
+	maven的依赖范围(scope),什么也不写，默认是compile
+		compile  编译，运行，test,package
+		provoided  编译，运行， 例如servlet
+		test 仅仅test
+		runtime 仅仅运行，例如 jdbc等驱动
+		system 编译，运行，要配合system环境变量使用
+		
+	nexus的安装与部署
+		window启动cmd命令在bin目录下执行nexus /run 
+		分别创建私有代理仓库，release和snapshot发布仓库
+		请参考相应的pom.xml文件和设置全局settings.xml文件
+		pom.xml	
+			需要设置私有仓库地址
+				<repositories>
+					<repository>
+					  <id>my-nexus</id>
+					  <name>My Nexus</name>
+					  <url>http://localhost:8081/repository/my_nexus/</url>
+					  <releases>
+						<enabled>true</enabled>
+					  </releases>
+					  <snapshots>
+						<enabled>true</enabled>
+					  </snapshots>
+					</repository>
+				  </repositories>
+			设置发布服务器
+			  <distributionManagement>
+				<repository>
+				  <id>mc_release</id>
+				  <name>mc release</name>
+				  <url>http://localhost:8081/repository/nexus_exam_release/</url>
+				</repository>
+				<snapshotRepository>
+				  <id>mc_snapshot</id>
+				  <name>mc snapshot</name>
+				  <url>http://localhost:8081/repository/nexus_exam_snapshot/</url>
+				</snapshotRepository>
+			  </distributionManagement>
+		全局settings.xml
+			需要设置私有仓库的镜像地址
+				<server>
+				  <id>mc_snapshot</id>
+				  <username>admin</username>
+				  <password>lanniao</password>
+				</server>
+				<server>
+				  <id>mc_release</id>
+				  <username>admin</username>
+				  <password>lanniao</password>
+				</server>
+			需要设置发布服务器的账号密码等信息
+				<mirror>
+				  <id>aliyunmaven</id>
+				  <mirrorOf>*</mirrorOf>
+				  <name>阿里云公共仓库</name>
+				  <url>http://localhost:8081/repository/my_nexus/</url>
+				</mirror>
+	父子项目依赖
+		父项目
+			1.必须是<packaging>pom</packaging>
+			2.dependencies是基本普通依赖，子项目都会依赖的jar,注意版本信息写在<properties></properties>
+			3.dependecymanagement是统一依赖，只有子项目有依赖引用的时候才显示依赖,版本统一在<properties>管理
+		子项目
+			1.必须填写父项目的依赖，注意引用父项目的pom路径，例如：
+				 <parent>
+					<groupId>com.mooc</groupId>
+					<artifactId>test-parent</artifactId>
+					<version>1.0-SNAPSHOT</version>
+					<relativePath>../test-parent/pom.xml</relativePath>
+				  </parent>
+			2.如果要使用父项目中的统一依赖的jar(子项目的groupId需要注释掉),只需要在子项目中的dependencies中添加项目的依赖信息即可，不需要版本信息，例如：
+				<dependency>
+				  <groupId>log4j</groupId>
+				  <artifactId>log4j</artifactId>
+				</dependency>
+		注意dependencies和dependecymanagement的区别
+		mvn（IDEA工具）的注释快捷键是Ctrl + /
+	聚合依赖
+		父项目，父项目packaging注意使用pom方式 
+		子项目使用model模式
+	插件中的依赖关系
+		可以点击pom.xml文件，右击选择diagram选项查看
+		
+	父工程
+		1.packaging 必须是pom
+		2.src删除
+		
+	   父子工程的依赖有两种情况(可以依赖管理dependency和plugin)
+		1.models
+		2.父工程的依赖要使用relativePath
+		
