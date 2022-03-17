@@ -1,0 +1,100 @@
+人机交换方式
+	GUI(Graphical User Interface)
+	CLI(Command Line Interface)
+语言介绍
+	第一代语言，二进制语言
+	第二代语言，汇编语言
+	第三代语言，高级语言(C，C++,Java等)
+	
+SUN(Stanford University Network)	
+
+Java计算平台分类
+	JSE(Java Standard Edition)
+	JEE(Java Enterprise Edition)
+	JME(Java Micro Edition)
+
+Java的主要特点
+	易学
+	强制面向对象
+	分布式(面向网络)
+	健壮性(强类型机制，异常机制，垃圾自动回收机制)
+	安全性
+	中立性
+	解释性
+	性能略高
+	原生支持多线程
+	
+Java的特征
+	面向对象（继承，封装，多态）
+	健壮性(和C,C++比较)
+	跨平台
+	
+Java两大核心机制
+	JVM(Java Virtual Machine)
+		
+	GC(Garbage Collection)
+		程序自动垃圾回收，空闲时回收，手动调用System.gc()触发回收,但是无法可控
+
+常用名称
+	Jdk(Java development kit)>Jre(Java runtime environment)>Jvm(Java virtual machine)
+		
+	API(Application Programming Interface)	
+Java 类中名称是否可以和文件名不一致？
+	有public修饰的类名称必须和文件名一致，一个类中有且最多一个public修饰类，其他类可以有多个
+	
+	不用public修饰的类名和类名称可以不一致
+
+变量类型
+	基本数据变量
+		byte,short,int,long,float,double,boolean,char
+	引用变量
+		class(字符串),接口,数组
+
+	
+变量
+	成员变量
+		实例变量(不用static修饰)
+		类变量(static修饰)
+	局部变量
+		方法内
+		代码块
+		形参
+	
+	异同：
+		生命周期不同
+		成员变量不需要初始化，局部变量除了形参外需要初始化
+
+基本类型区别
+	类型	长度
+	byte 	1byte=8bit
+	short   2byte=16bit
+	int 	4byte=32bit
+	long 	8byte
+	
+	float	4byte
+	double 	8byte
+	
+	char	2byte
+	
+	整型类型默认是int,使用long类型需要10L
+	浮点类型默认是double,使用float需要使用51.0f/51.0F
+	
+	char类型表示
+		char a='9';
+		char b='\n';
+		char c =11;
+		
+	boolean
+		只能是false和true，不能是null
+		
+		JVM中true用1表示，false用0表示
+		
+编码
+	ASCII
+		一共规定128个字符
+	Unicode
+		
+	
+数据转换
+	byte,short,char不能相互转换，只能转换为int在操作
+	
