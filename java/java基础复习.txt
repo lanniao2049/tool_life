@@ -51,7 +51,7 @@ Java 类中名称是否可以和文件名不一致？
 		class(字符串),接口,数组
 
 	
-变量
+变量位置
 	成员变量
 		实例变量(不用static修饰)
 		类变量(static修饰)
@@ -63,26 +63,46 @@ Java 类中名称是否可以和文件名不一致？
 	异同：
 		生命周期不同
 		成员变量不需要初始化，局部变量除了形参外需要初始化
-
+		
+		
+变量注意事项	
+	1.先定义，在使用
+	2.有作用域
+	3.同一个作用域中不能重复多个变量
+	
+	
 基本类型区别
-	类型	长度
-	byte 	1byte=8bit
-	short   2byte=16bit
-	int 	4byte=32bit
-	long 	8byte
+	类型	长度			表示范围
+	byte 	1byte=8bit		-128-127
+	short   2byte=16bit		-2^(16-1) - 2^(16-1)-1
+	int 	4byte=32bit		-2^(32-1) - 2^(32-1)-1
+	long 	8byte=64bit		-2^(64-1) - 2^(64-1)-1
 	
-	float	4byte
-	double 	8byte
+	float	4byte=32bit
+	double 	8byte=64bit
 	
-	char	2byte
+	char	2byte=16bit
 	
 	整型类型默认是int,使用long类型需要10L
 	浮点类型默认是double,使用float需要使用51.0f/51.0F
 	
+	float表示的数值的范围比long还大，为什么？？
+	
+	
 	char类型表示
+		// 一个字符
 		char a='9';
+		// 转义字符
 		char b='\n';
+		// unicode
 		char c =11;
+		char e = '\u0123';
+		// 一个字符
+		char d = '中';
+		char d1 =5;
+		char d2 = '5';
+		
+		System.out.println(d1);
 		
 	boolean
 		只能是false和true，不能是null
@@ -97,4 +117,86 @@ Java 类中名称是否可以和文件名不一致？
 	
 数据转换
 	byte,short,char不能相互转换，只能转换为int在操作
+	byte a1=125;
+	short a2=45;
+	char a3= 'a';
 	
+	a1+a2,
+	a1+a3,
+	a2+a3
+	
+	都是int接受
+	//
+	int d = 128;
+    byte e = (byte) d;
+	System.out.println(e);
+	
+	// 为什么可以？默认是int,提升到long
+	long a1  = 123122;
+	// 不可以的，因为默认int已经超出范围，必须加上后缀l/L
+    long a2 = 2343243243243243;
+    //	可以的
+	long a3 = 2343243243243243l;
+	
+String	
+	引用类型
+	区分+到底是加法运算还是连接字符串操作关键看+前后两边是否是字符串
+
+		int num1 = 19;
+        char cha1 = 'a';
+        String str1 = "hello";
+        System.out.println(num1 + cha1 + str1);
+        System.out.println(num1 + str1 + cha1);
+        System.out.println(num1 + (cha1 + str1));
+        System.out.println('a' + '\n' + '*');
+        System.out.println('b' + '\n' + "good");
+        System.out.println('b' + "\n" + "good");
+        System.out.println("b" + "\n" + "good");	
+		
+进制之间的转换
+
+	二进制
+		0b01/0B01
+	八进制
+		01/02/07
+	十六进制
+		0x123/0X123
+	
+	二进制
+		0 1 0 1 0 0 0 0
+		首位是符合位 0 表示正数，1表示负数
+		
+		
+	正数的原码，反码，补码一样，三码合一
+	负数的原码，就是正数原码基础上符合位变为1 
+	负数的反码，除符号位，其他全部取反
+	负数的补码，反码+1
+	
+	计算机底层中都以补码的方式存储数据的
+	
+	
+	10进制--》2进制
+		除2取余的逆
+		
+		2 13 
+		   6			1
+			 3			0
+			   1		1
+			   0		1 
+	二进制-->八进制 
+		0000 0000 0000 0000
+			三个一进
+	二进制-->十六进制
+			四个一进
+			
+	八进制转二进制
+		0231
+			010	011 001
+	十六进制转二进制	
+		0x234
+			0010 0011 0100
+			
+	十进制与八进制，十六进制转换，可以通过中间二进制桥梁
+
+	
+		
