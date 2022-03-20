@@ -198,5 +198,161 @@ String
 			
 	十进制与八进制，十六进制转换，可以通过中间二进制桥梁
 
+运算符
+	int num1 =12;
+	int num2 = 5;
+	double result1 = num1 / num2;
+	double result2 = num1 / num2 +0.0;
+	double result3 = num1 / (num2+0.0);
+	double result4 = (double)num1/num2;
+	double result5 = (double)(num1/num2);
 	
+	// 取模结果与被取模的符号位一致
+
+        int num1 = 12;
+        int num2 = 5;
+
+        System.out.println("num1%num2 "+num1%num2);
+
+        int m1 = -12;
+        int n1 = 5;
+        System.out.println("m1%n1 "+m1%n1);
+
+        int m2 = 12;
+        int n2 = -5;
+        System.out.println("m2%n2 "+m2%n2);
+
+        int m3 = -12;
+        int n3 = -5;
+        System.out.println("m3%n3 "+m3%n3);
 		
+	// 自增计算
+        short a1 = 10;
+        // a1怎么实现+1的操作
+//        a1 = a1+1;
+//        a1+1;
+        a1 = (short)( a1+1);
+        // 使用自增运算，数据类型在原来的基础上不会改变(二进制的基础上+1)
+        a1++;
+        System.out.println(a1);
+
+        byte b1 = 127;
+        b1++;
+        System.out.println(b1);
+		
+		byte c1 = -128;
+        c1--;
+        System.out.println(c1);
+		
+		// 一个三位数，分别输出百位数，十位数，个位数
+        int number = 823;
+        int bai = number/100;
+        int shi = number%100/10;
+        int ge = number%10;
+        System.out.println("百位数："+bai+",十位数："+shi+",个数数："+ge);
+		
+		
+	// 赋值运算
+        short s1 = 5;
+        // n+=2 可以理解为 n = n+2;但是和真正的n+2还是不一样的
+//        s1 = s1+2;  编译失败
+        // 使用下面的不改变数据的基本类型
+        s1+=2;
+		
+		// 思考题1
+        short s1 = 5;
+        /*
+        s1 = s1+2;
+        s1+2;
+        两者有什么区别？
+        */
+        // 思考题2
+        int a = 1;
+        a*=0.1;
+        System.out.println(a);
+        a++;
+        System.out.println(a);
+        // 思考题3
+        int m =2;
+        int n =3;
+        n*=m++;
+        System.out.println("n="+n+",m="+m);
+        // 思考题4
+        int n1 = 10;
+        n1+=(n1++)+(++n1);
+        System.out.println(n1);
+		
+		  // 经典自增面试题
+    public static void  test1(){
+        boolean x = true;
+        boolean y = false;
+        short z =42;
+//        if (y==true)
+        if ((z++==42)&(y=true))z++;
+        if (x=false||(++z==45))z++;
+        System.out.println(z);
+    }
+	
+位运算符
+	<< 左移
+		空位补0，高位丢弃
+	>> 右移
+		高位为0时，右移后，高位补0
+		高位为1时，右移后，高位补1
+	>>> 无符号右移
+		被移位二级制无论是0或者1，空缺位都是0
+	&  二进制与操作，都为1则为1，否则为0
+	|  二级制或操作，只要有一个1则为1，全部为0才为0
+	^  二级制异或操作，不同才为1，相同则为0
+	
+	/**
+     * 经典a,b交换
+     */
+    public static void test2(){
+        int a =10;
+        int b =20;
+        System.out.println("a = "+a+",b="+b);
+
+        // 推荐使用该方法，使用与任何数据类型
+//        int temp = a;
+//        a = b;
+//        b = temp;
+//        System.out.println("a = "+a+",b="+b);
+
+        // 下面的方法
+        // 优点：不适用临时变量，缺点：1.有可能超出数据限制，2，仅能使用与数字类型，不能使用String等的交换
+//        a = a+b;
+//        b = a-b;
+//        a = a -b;
+//        System.out.println("a = "+a+",b="+b);
+
+        // 使用^运算 ，仅使用与整数类型
+        a = a^b;
+        b = a^b;
+        a = a^b;
+        System.out.println("a = "+a+",b="+b);	
+		
+		
+数组 
+	1.数组存放同样类型的数据(可以是基本类型的也可以是引用类型的数据)
+	2.数组存放数据有一定的顺序
+	3.数组在内存中的空间是连续的
+	4.数组空间大小一旦确定不可更改
+	
+	
+	public static void test4(){
+        // 动态初始化，堆，栈，内存分布情况
+        int[] a = new int[5];
+        // 静态初始化
+        int[] a1 = new int[]{2, 3, 4, 5};
+        // 怎么理解该情况
+        int[] a2 = {};
+        System.out.println("a2 " + a2);
+        // 类型推断
+        int[] a3 = {1,2,5,};
+        int[] a4;
+        a4 = new int[4];
+        // 下面先声明，后初始化为什么不能使用类型推断
+//        int[] a5;
+//        a5 = {1,2,3};
+    }
