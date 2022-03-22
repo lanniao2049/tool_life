@@ -356,3 +356,267 @@ String
 //        int[] a5;
 //        a5 = {1,2,3};
     }
+	
+二维数组
+	
+	
+	public static void  test1(){
+        // 二维数组
+        int[][] a1 = new int[5][4];
+        int[][] a2 = {{1,2,3},{1,2},{},{5}};
+        int[][] a3;
+        a3 = new int[12][];
+//        int[][] a4;
+//        a4 = {{1,2},{2,3},{4,5}}
+
+        String[][] st1 = new String[5][];
+        System.out.println(st1);
+        System.out.println(st1[0]);
+        System.out.println(a3[1]);
+        System.out.println(a2[1]);
+		System.out.println(a2[0].length);
+    }
+
+数组 
+	二维数组
+	// 如何理解y的赋值
+	int[]x,y[];
+	
+	public static void test2(){
+        // 特别要注意x是一维数组，y是二位数组
+        int[]x,y[],z;
+        x = new int[]{1, 2, 3, 4};
+        y = new int[][]{{1, 2, 3,}, {2, 3}};
+    }
+
+数组的算法
+
+	/**
+     * 杨辉三角，首尾元素都为1，其他元素满足y[i][j]=y[i-1][y-1]+y[i-1][y]
+     */
+    public static void test4(){
+        // 1.杨辉三角初始化
+        int[][] yangHui = new int[10][];
+//        yangHui[0] = new int[1];
+//        yangHui[1] = new int[2];
+//        yangHui[2] = new int[3];
+
+        // 2.赋值
+        for (int i = 0; i < yangHui.length; i++) {
+            // 2.1初始化数组
+            yangHui[i] = new int[i+1];
+            // 2.2首尾元素赋值
+            yangHui[i][0] = 1;
+            yangHui[i][i] = 1;
+            
+            // 2.3其他数据元素赋值
+            if (i>1){
+                for (int j = 1; j < yangHui[i].length-1; j++) {
+                    yangHui[i][j] = yangHui[i-1][j-1] + yangHui[i-1][j];
+                }
+            }
+        }
+        // 3.遍历所有元素
+        for (int i = 0; i < yangHui.length; i++) {
+            for (int j = 0; j < yangHui[i].length; j++) {
+                System.out.print(yangHui[i][j]+"\t");
+            }
+            System.out.println();
+        }
+    }
+	
+	/**
+     * 一个为10的数组，元素是两位数的正整数随机数，求该数组的最大值，最小值，和以及平均值
+     * [10,99] ，计算公式(int)(Math.random()*(99-10+1)+10)
+     */
+    public static void test5(){
+        int[] numbers = new int[10];
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = (int) (Math.random() * (99 - 10 + 1) + 10);
+            System.out.print(numbers[i]+"\t");
+        }
+        int maxValue = numbers[0];
+        for (int i = 0; i < numbers.length; i++) {
+            if (maxValue<numbers[i]){
+                maxValue = numbers[i];
+            }
+        }
+        System.out.println();
+        System.out.println("最大值是："+maxValue);
+        int minValue = numbers[0];
+        for (int i = 0; i < numbers.length; i++) {
+            if (minValue>numbers[i]){
+                minValue = numbers[i];
+            }
+        }
+        System.out.println("最小值是："+minValue);
+
+        int sum = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            sum += numbers[i];
+        }
+        System.out.println("和是："+sum);
+
+        int avg = sum/numbers.length;
+        System.out.println("平均值是："+avg);
+    }
+	
+	/**
+     * 数组之间相互赋值，复制的区别
+     */
+    public static void test6(){
+        int[] arry1 = new int[]{1,9,8,23,84,43,29};
+        for (int i = 0; i < arry1.length; i++) {
+            System.out.print(arry1[i]+"\t");
+        }
+        System.out.println();
+        int[] arry2 = arry1;
+//        // 修改数组arr2中偶数索引为索引值，例如 i[0]=0,i[2]=2
+//        for (int i = 0; i < arry2.length; i++) {
+//            if (i%2==0){
+//                arry2[i] = i;
+//            }
+//        }
+
+        // 复制
+        int[] arry3 = new int[arry1.length];
+        for (int i = 0; i < arry3.length; i++) {
+            arry3[i] = arry1[i];
+        }
+
+        for (int i = 0; i < arry1.length; i++) {
+            System.out.print(arry1[i]+"\t");
+        }
+    }
+	
+	/**
+     * 数组元素反转
+     */
+    public static void test7(){
+        String[] str1 = new String[] {"JJ","DD","BB","AA","LL","GG","WW","TT","NN","UU","II","RR"};
+        // 第一种方案 temp临时变量
+//        for (int i = 0; i < str1.length/2; i++) {
+//            String temp = str1[i];
+//            str1[i] = str1[str1.length-1-i];
+//            str1[str1.length-1-i] = temp;
+//        }
+//        for (int i = 0; i < str1.length; i++) {
+//            System.out.print(str1[i]+"\t");
+//        }
+//        System.out.println();
+
+        // 第二种方案 从两边向中间比较
+        for (int i = 0,j= str1.length-1;i<j;i++,j--){
+            String temp = str1[i];
+            str1[i] = str1[j];
+            str1[j] = temp;
+        }
+
+        for (int i = 0; i < str1.length; i++) {
+            System.out.print(str1[i]+"\t");
+        }
+        System.out.println();
+    }
+	
+	 /**
+     * 数组查找方法，线性查找，二分法查找
+     */
+    public static void test8(){
+        String[] str = new String[]{"JJ","DD","BB","AA","LL","GG","WW","TT","NN","UU","II","RR"};
+
+        // 线性查找
+        String dest = "GG";
+        boolean isFlag = true;
+        for (int i = 0; i < str.length; i++) {
+            if (dest.equals(str[i])){
+                System.out.println("查找到指定元素的坐标是 " + i);
+                isFlag = false;
+                break;
+            }
+        }
+        if (isFlag) {
+            System.out.println("没有查找到指定的元素");
+        }
+    }
+
+
+	/**
+     * 二分法查找，注意使用该二分法必须按照一定的顺序排序后才可以使用
+     */
+    public static void test9(){
+        int[] num = {-89,-56,-45,-38,-21,-9,12,24,36,48,59,66,78,83,91,99};
+        int dest = 36;
+        // 首位索引
+        int head = 0;
+        // 尾位索引
+        int end = num.length - 1;
+        boolean isFlag = true;
+        while (head <= end){
+            int middle = (head + end)/2;
+            if (dest == num[middle]){
+                System.out.println("找到目标数据元素，位置是 " + middle);
+                isFlag = false;
+                break;
+            } else if (num[middle]>dest){
+                end = middle -1;
+            } else {
+                // num[middle]<dest
+                head = middle+1;
+            }
+        }
+        if (isFlag) {
+            System.out.println("没有查找到该目标元素！");
+        }
+    }
+	
+	
+	
+	// 6个正整数 从随机1-30选取，各个元素都不相同
+	  
+	 
+	// 回形针数组样例
+	
+	
+
+算法优劣的标注
+	时间复杂度
+	空间复杂度
+	稳定性
+
+	/**
+     * 经典算法：冒泡排序，相邻的元素依次比较，前面的数据比后面的数据大则交换，依次运算
+     */
+    public static void test10(){
+        int[] numbers = {-12,-23,-46,9,87,23,-13,-34,-7,43,12,89,99};
+        // 大伦次数
+        for (int i = 0; i < numbers.length-1; i++) {
+            // 每次大伦次下的小对比次数
+            for (int j = 0;j< numbers.length-1-i;j++){
+                // 判断相邻两个元素的大小关系，前面元素大于后面的元素则交换
+                if (numbers[j]>numbers[j+1]){
+                    int tmp = numbers[j];
+                    numbers[j] = numbers[j+1];
+                    numbers[j+1] = tmp;
+                }
+            }
+        }
+        // 遍历所有数据
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.print(numbers[i]+"\t");
+        }
+    }
+	
+各个算法之间的对比
+	时间复杂度
+	空间复杂度
+	稳定性
+	
+	
+	最常使用的算法是冒泡排序，快速排序，堆排序等
+	
+	
+数组常见异常
+	ArrayIndexOfBoundsException
+	NullPointerException
+	
+	
