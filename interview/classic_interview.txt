@@ -1,0 +1,41 @@
+1.
+	public static void mian(String[] args){
+		int a = 10;
+		int b = 10;
+		//调用method方法，可以输入结果"a=100"和"b=200"，method方法如何写
+		method(a,b);
+		System.out.println("a="+a);
+		System.out.println("b="+b);
+	}
+	
+	方法一：
+	public static void method(int a, int b){
+       System.out.println("a="+a*10);
+       System.out.println("b="+b*20);
+       System.exit(0);
+    }
+	方法二：
+	public static void method(int a, int b){
+        PrintStream ps = new PrintStream(System.out){
+            @Override
+            public void println(String x) {
+                if ("a=10".equals(x)){
+                    x = "a=100";
+                } else if ("b=10".equals(x)){
+                    x = "b=200";
+                }
+                super.println(x);
+            }
+        };
+        System.setOut(ps);
+    }
+		
+2.
+	public static void test12(){
+        int[] number = new int[10];
+        System.out.println(number);
+        char[] chars = new char[10];
+        System.out.println(chars);
+    }
+	
+3.	

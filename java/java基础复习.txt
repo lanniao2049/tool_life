@@ -691,9 +691,54 @@ java对象
 	3.使用场景 xxx.method(new Xxxx());
 	
 
+方法的重载
+	
+	两同一不同：
+		两同：同一个类；同样的方法名称
+		一不同：参数列表不同（参数类型不同，参数个数不同，参数顺序不同）
+		
+	判断重载依据：
+		根据定义确定，与方法的修饰符，方法的返回值，形参变量名和方法体无关
+		
+	
+	如何确定一个方法
+		方法名+参数列表 
+		
+	
+	可变形参
 	
 	
-	
+    private void method(String name){
+
+    }
+
+    /**
+     * 1.可变个数形参方法和数组方法相同的方法不可同时存着，不构成重载
+     * 2.可变个数形参参数必须位于最后
+     * 3.在方法中可变形参个数最多只能有一个
+     * 4.方法可变个数形参可以和方法名相同参数列表不同的共存，重载
+     * 5.方法可变个数形参，可以传0个到N个同样的参数
+     * @param strings
+     */
+    public void method(String ... strings){
+
+    }
+
+//    public void method(String[] args){
+//
+//    }
+
+    public void method(int age,String ... strings){
+
+    }
+    // 写法错误
+//    public void method(String ... strings,double salary){
+//
+//    }
+
+
+
+
 		
 	
 	
