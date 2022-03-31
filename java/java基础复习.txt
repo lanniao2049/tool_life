@@ -823,6 +823,17 @@ Object类
 		4.重写的子类的异常不能大于父类的异常，如父类异常是exception,子类可以是RuntimeException
 
 				
-		重写必须是子类和父类都是非static修饰，static修饰的类是类方法不能被重写
+		重写必须是子类和父类都是非static修饰，static修饰的方法是类方法不能被重写，同样的方法父类用static，子类必须也用static
 		
+super
+	子类和父类之间的关系
 	
+	super可以调用父类属性，方法，构造器 
+		super.age 
+		super.eat(name);
+		super(age,name);
+	子类的构造器调用父类的构造器使用super必须位于首行
+	在构造器中this(形参)和super(形参)只能二选一
+	在构造器没有显式的调用super，默认的调用父类无参构造器
+	
+		
