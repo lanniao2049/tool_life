@@ -931,7 +931,8 @@ instance of的使用
 	
 	public class SubTest1{
 		public static void main(String[] args){
-			Base b = new Sub();
+			Base b = new 
+			();
 			b.add(1,2,3);
 			
 			Sub s = (Sub)b;
@@ -969,8 +970,16 @@ Object类的使用
 		3.String,Date,包装类等的toString()实际重写了Object的toString()方法
 		4.自定义类的toString()输出，需要重写Object的toString()方法，返回的对象的实体内容
 		
+		特别注意：
+		String a = "ssdfdf";
+		a = null;
+		System.out.println(a);
+		System.out.println(a.toString());
+		
 	
 包装类的使用 
+
+	主要是基本类型有类的特征
 	
 	Boolean flag = new Boolean("true");
 	Boolean flag1 = new Boolean(true);
@@ -1001,3 +1010,24 @@ Object类的使用
 	Integer x = 128;
 	Integer y = 128;
 	System.out.println(x==y);
+	
+引用类型
+	类，数组，接口 
+
+    数组也是特殊的类，也继承Object，实现相关方法
+
+
+static关键字 
+	static可以修饰属性，方法，代码块，内部类 
+	
+	变量
+		非static变量，实例变量 
+		static变量，类变量，共享
+	
+	类变量 	
+		1.静态变量随着类的加载而加载，可以使用类.属性调用
+		2.静态变量加载顺序要早与实例变量。
+		3.类在内存中只能加载一次，类变量也只能加载一次，存在方法去的静态域中。
+		
+方法区 
+	类的加载信息，静态域，常量池
