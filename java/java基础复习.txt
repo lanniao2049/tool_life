@@ -1031,3 +1031,73 @@ static关键字
 		
 方法区 
 	类的加载信息，静态域，常量池
+	
+	static方法
+		1.静态方法随着类的加载而加载，可以使用类.方法调用
+		2.静态方法可以调用静态方法和静态属性，不能调用非静态方法和非静态属性。
+		3.静态方法内部不可以使用this和super关键字
+		
+单例模式 
+
+/**
+ * 单例模式，饿汉模式
+ */
+class Person{
+
+    private Person(){}
+
+    private static Person person = new Person();
+
+    public static Person getInstance(){
+        return person;
+    }
+}
+
+/**
+ * 单例模式，懒汉模式
+ */
+class Order{
+    private Order(){}
+
+    private static Order order = null;
+
+    public static Order getInstance(){
+        if (order == null){
+            order = new Order();
+        }
+        return order;
+    }
+}
+
+	单例模式优缺点：
+		饿汉模式：
+			优点：线程安全
+			缺点：首先加载，过早加载
+		懒汉模式：
+			优点：晚加载，用的时候才加载
+			缺点：线程不安全
+			
+代码块
+	1.代码块的作用：用于初始化类或者对象
+	2.代码块修饰只能static和非static修饰
+	3.静态代码块随着类的加载而执行，且只能加载一次
+	4.非静态代码块随着对象的创建而执行，并且每new一次创建一次
+	5.多个静态代码块安装顺序执行，多个非静态代码块安装顺序执行，静态代码块和非静态代码库
+	静态代码块比非静态代码块早执行
+	6.静态代码块只能调用静态方法和静态属性
+	7.非静态代码可以调用静态方法，静态属性，非静态方法，非静态属性
+	
+	
+final关键字
+	可以修饰类，方法，属性 
+	
+	修饰类 String 
+	修饰方法 常量
+	修饰属性 不能重写 Object.getClass()
+	
+	修饰变量
+		显示初始化，代码块，构造器中，不能在方法中（因为在构造器之后的方法已经太晚了）
+		
+		方法内 
+			形参 使用final修饰，表明此形参是个常量，方法体内只能使用，不能修改该值
+			方法内表示常量
