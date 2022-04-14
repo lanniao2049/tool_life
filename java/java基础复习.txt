@@ -1347,3 +1347,58 @@ abstract class Jeep extends Car{
 			类内可以定义属性，方法，构造器，代码块等
 			可以使用final修饰表示不能继承，反正可以继承
 			可以使用abstract修饰表示抽象类
+			
+	注意：
+		在局部内部类的方法中，如果要调用局部内部类所在声明的方法的局部变量
+		需要声明final,1.7及以前需要声明为显式的final,1.8以后要隐式
+		
+		public void  method(){
+			int age = 10;
+			class XX{
+				public void fly(){
+					System.out.println(age);
+				}
+			}
+		}
+		
+		内部类和外部类都要生成字节文件
+		成员内部类生成字节文件是外部类$内部类.class 
+		局部内部类生成字节文件是外部类$数字内部类.class 
+		
+异常 
+	java.lang.Throwable
+		java.lang.Error
+		java.lang.Exception
+			编译时异常(check)
+				IoException
+					FileNotFoundException
+				classnotFoundException
+			运行时异常(uncheck)
+				NullPointerException
+				ClassCastException
+				ArrayIndexOfBoundsException
+				NumberFormatException
+	异常处理方式
+		try-catch-finally  抛出异常自己处理
+		throws 抛出了上级处理
+				
+	数据库连接，输入输出流，socket连接等,jvm不能自动释放，我们需要使用finnaly释放
+
+	编译时异常常见try,catch,finally,如果不处理就不能编译
+	运行时异常可以不用try,catch,finally,运行时异常很多无法确定
+	
+	如何选择使用try-catch-finally还是throws?
+		1.如果父类中被重写的方法没有throws方式处理异常，则子类重写的
+		方法也不能使用throws，意味着如果子类重写的方法异常必须使用try-catch-finally
+		2.执行的方法a中，先手有调用了另外的几个方法，这几个方法是递进关系执行的。我们建议使用
+		throws处理。而执行的方法a可以使用try-catch-finally
+	
+	手动异常,生成一个异常对象
+		throw 
+		throw new RuntimeException("手动异常！");
+		
+		1.继承RuntimeException或者Exception
+		2.提供全局的序列化
+		3.提供重载的构造器
+	
+		
