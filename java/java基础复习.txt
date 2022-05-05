@@ -1501,7 +1501,7 @@ abstract class Jeep extends Car{
 			}
 			
 			同步监视器(锁，任何对象都可以充当监视器)
-				在继续Thread类中使用该类的.class或者static 对象变量
+				在继承Thread类中使用该类的.class或者static 对象变量
 				在实现Runnable接口的类中可以使用Object或者this
 				
 				监视器要求多个线程共享一个
@@ -1609,10 +1609,52 @@ abstract class Jeep extends Car{
 	线程池
 		好处：	
 			1.提供响应速度
-			2.降低资源消耗
+			2.降低资源消耗，线程使用完毕放回到线程池中
 			3.便于线程管理
 				corePoolSize:核心线程
 				maximunumPoolsize:最多线程
 				keepAliveTime:线程没有任务时候保持的最长时间后终止
 			
 		ExcutorServices service = Excutors.newFixedThreadPoole(10);	
+		
+	是否释放锁
+		释放锁 
+			1.同步方法或者同步代码块执行完毕，释放锁
+			2.同步方法或者同步代码块中执行break,return 释放锁
+			3.同步方法或者同步代码块中有未处理的异常或者错误，释放锁
+			4.同步方法或者同步代码块中执行wait()，释放锁
+		不释放锁
+			1.线程执行sleep或者yield，不释放锁 
+			2.线程被挂起,执行suspend方法
+			
+			
+常用类的使用
+	String,StringBulider,StringBuffer,Date,localDate,localTime,compare	
+	
+	字符串String
+	public final class String
+		implements java.io.Serializable, Comparable<String>, CharSequence {
+		/** The value is used for character storage. */
+		private final char value[];
+		……
+		}
+		
+	String 
+		1.使用final修饰，表示不可被继承
+		2.实现Serializable,Comparable,CharSequence接口
+			Serializable表示序列化
+			Comparable表示可以比较
+		3.String内部定义 final char value[]用于存储字符串数组;
+		4.String代表不可变
+			1.重新赋值时候不可在原有的基础修改，只能重新开辟新的内存空间赋值
+			2.在现在字符基础上连接操作也不可在原有基础上修改，只能重新开辟新的内存空间赋值
+			3.当调用String的replace修改字符或者字符串也必须重新指定内存区域赋值
+		5.通过字面量的方式(区别new)给一个字符串赋值，此时字符串赋值在方法区中的字符串常量池中。
+			String s1 = "abc";
+			String s2 = "abc";
+		6.常量池中是不会保持相同内容的字符串的
+			堆，栈，方法区(包含字符串常量池)
+		
+		
+				
+			
