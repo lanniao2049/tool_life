@@ -1645,16 +1645,75 @@ abstract class Jeep extends Car{
 			Serializable表示序列化
 			Comparable表示可以比较
 		3.String内部定义 final char value[]用于存储字符串数组;
-		4.String代表不可变
-			1.重新赋值时候不可在原有的基础修改，只能重新开辟新的内存空间赋值
-			2.在现在字符基础上连接操作也不可在原有基础上修改，只能重新开辟新的内存空间赋值
+		4.String代表不可变的字符序列。
+			1.重新赋值时候不可在原有的基础修改，只能重新开指定的内存空间赋值
+				// 从内存中解析(栈，方法区字符串常量池)
+				String s1 = "abc";
+				s1 = "hello";
+			
+			2.在现在字符基础上连接操作也不可在原有基础上修改，只能重新指定新的内存空间赋值
+				String s2 = "good";
+				String s3 = s2+"fd";
+				System.out.println(s2);
 			3.当调用String的replace修改字符或者字符串也必须重新指定内存区域赋值
+				String s3 = "good";
+				String s4 = s3.replace("g","w");
+				System.out.println(s3);
+				System.out.println(s4);
 		5.通过字面量的方式(区别new)给一个字符串赋值，此时字符串赋值在方法区中的字符串常量池中。
 			String s1 = "abc";
 			String s2 = "abc";
 		6.常量池中是不会保持相同内容的字符串的
 			堆，栈，方法区(包含字符串常量池)
 		
+	面试题
+		String s = "hello";
+		String s1 = new String("hello");
+		s 和 s1 是否相同？
+		
+		String abc = new String("abc");在内存中创建了几个对象？
+			一个是堆中的new结构，另一个是char[]对应的常量池中的数据："abc"
+		
+	常用赋值方式
+		1,字面量赋值
+			String s1 = "hello";
+		2.new赋值
+			String s2 = new String("hello");
+	String的不同拼接
+		1.两个常量池字符串拼接还是常量池字符串
+		2.一个常量池字符串和一个变量拼接组成的在堆中
+		3.堆中字符串.intern(),强制返回字符串常量
+	//	
+	public static void main(String[] args) {
+        String s1 = "abc";
+        String s2 = "def";
+        String s3 = "abcdef";
+        String s4 = "abc"+"def";
+        String s5 = s1+"def";
+        String s6 = "abc"+s2;
+        String s7 = s1 +s2;
+        String s8 = s7.intern();
+        System.out.println(s3==s4);
+        System.out.println(s3==s5);
+        System.out.println(s3==s6);
+        System.out.println(s3==s7);
+        System.out.println(s3==s8);
+    }
+		
+		
+	面试题 
+		public static void main(String[] args) {
+        String a = new String("good");
+        char[] b = {'t','e','s','t'};
+        StringTest test = new StringTest();
+        test.change(a,b);
+        System.out.println(a);
+        System.out.println(b);
+    }
+    public void change(String a,char[] b){
+        a = "test ok";
+        b[0]= 'b';
+    }
 		
 				
 			
