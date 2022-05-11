@@ -1721,12 +1721,57 @@ abstract class Jeep extends Car{
 	String st = new String("abc123中国");
 	// 采用默认编码
 	byte[] s = st.getBytes();
+	// 解码，特别需要注意编码和解码的时候字符集必须一致，否则乱码
+	String ts = new String(s,"gbk");
 	//
 	Utf-8 汉字一个汉字3个字节，GBK一个汉字2个字节
-		
+	
+	常见算法题目
+	1.模拟一个trim方法，去除字符串两端的空格。
+	2.将一个字符串进行反转。将字符串指定部分进行反转。比如"abcdefg"反转为"abfedcg"
+	3.获取一个字符串在另一个字符串中出现的次数。
+		比如：获取"ab"在"abkkcadkabkedfkabkskab"中出现的次数
+	4.获取两个字符串中最大相同子串。比如：
+		str1="abcwerthelloyuiodef";str2="cvhellobnm";
+		提示：将短的那个串进行长度一次递减的子串与较长的串比较
+	5.对字符串中字符进行自然顺序排序。
+		提示：
+			1) 字符串变成字符串数组
+			2) 对数组排序，选择，冒泡，Arrays.sort();
+			3) 将排序后的数组变成字符串	
+	
 	String,StringBuffer,StringBulider的区别
 		String:不可变序列,底层用  char[] 存储
 		StringBuffer:可以序列，线程安全,效率低,jdk1.0，底层用  char[] 存储
 		StringBulider:可以序列，线程不安全，效率高，jdk1.5，底层用  char[] 存储
+		
+		源码分析：
+			String String s = new String("abc");  实际上是 char[] t1 =new char[]{'a','b','c'};
+			StringBuffer s1 = new StringBuffer();  实际上是  char[] t2 = new char[16];
+			s1.append('a');  则是 t2[0]='a';
+			s1.append('b');  则是 t2[1]='b';
+			扩容问题：如果要添加的数据底层数组撑不下了，那就需要扩容底层的数组。
+			默认情况下，扩容为原来的2倍+2，同时将原有数组的远程复制到新的数组中。
+			
+			防止因为扩容影响效率，建议使用 StringBuffer sb = new StringBuffer(50);
+	
+日期和时间
+		System.currentTimeMills();  表示现在距离1970年1月1日0时0分0秒的时间戳(时间差)
+		
+		java.util.Date 
+			java.sql.Date 
+			方法	
+				toString();
+				getTime();  时间戳
+			构造器 
+				Date d = new Date();
+				Date d1 = new Date(12323232431L);
+			
+			java.sql.date怎么实现java.util.date互转
+				java.util.date --->java.sql.date 
+					不能转换
+					java.util.date.getTime() 
+					java.sql.date t = new Date(java.util.date.getTime());
+				java.sql.date--->java.util.date 直接转换
 				
 			
