@@ -1774,4 +1774,20 @@ abstract class Jeep extends Car{
 					java.sql.date t = new Date(java.util.date.getTime());
 				java.sql.date--->java.util.date 直接转换
 				
+		SimpleDateFormat
+			SimpleDateFormat sdf = new SimpleDateFormat();
+			Date date = new Date();
+			String time = sdf.format(date);
+			sdf.parse();
 			
+			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				
+	面试题 
+		String str = null;
+		StringBuffer sb = new StringBuffer();
+		sb.append(str);
+		System.out.println(sb.length);
+		System.out.println(sb);
+		
+		StringBuffer sb1 = new StringBuffer(str);
+		System.out.println(sb1);
