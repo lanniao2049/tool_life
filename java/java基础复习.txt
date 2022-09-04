@@ -931,8 +931,7 @@ instance of的使用
 	
 	public class SubTest1{
 		public static void main(String[] args){
-			Base b = new 
-			();
+			Base b = new Sub();
 			b.add(1,2,3);
 			
 			Sub s = (Sub)b;
@@ -1320,6 +1319,43 @@ abstract class Jeep extends Car{
 		}
 	}
 	
+经典的面试题
+	public interface A{
+		int x = 2;
+	}
+	public class B{
+		int x = 1;
+	}
+	public class C extends B implements A{
+		public void play(){
+			System.out.println(x);
+		}
+	}
+	// 这里到底报什么错误
+	
+	public interface A{
+		void play();
+	}
+	public interface B{
+		void play();
+	}
+	public interface C extends A,B{
+		Ball ball = new Ball("PingPang");
+	}
+	
+	public class Ball implements C{
+		public static void main(String[] args){
+			
+		}
+	
+		public void play(){
+			ball = new Ball("FootBall");
+			System.out.println("-----);
+		}
+		
+	}
+	// 错误在哪里？
+	
 
 	jdk1.8的新特性
 		1.除了全局常量和抽象方法，还可以定义静态方法和默认方法
@@ -1463,7 +1499,7 @@ abstract class Jeep extends Car{
 		getPriority(): 获取线程优先值
 		setPriority(int newPriority):设置当前线程优先级
 		
-		低优先级只是获取调用的概率低，并发一定是在高优先级线程之后才调用
+		低优先级只是获取调用的概率低，并不一定是在高优先级线程之后才调用
 		
 	线程的创建方式
 		extends Thread 
@@ -1483,11 +1519,11 @@ abstract class Jeep extends Car{
 		
 		
 	线程的生命周期
-		新建
-		就绪
-		运行
-		阻塞 
-		死亡
+		新建 new Thread()
+		就绪 xx.start();yeild()
+		运行 获取cpu执行权/sleep结束/join结束/notify/notifyAll/同步锁结束
+		阻塞 sleep()/join()/synchronized()/await()
+		死亡 执行完毕/stop()/异常
 		各种状态直接的相互转换
 	
 	线程安全问题	
@@ -1693,6 +1729,7 @@ abstract class Jeep extends Car{
         String s6 = "abc"+s2;
         String s7 = s1 +s2;
         String s8 = s7.intern();
+		/// 非常重要的
 		final String s9 = "abc";
 		String s10 = s9+"def";
         System.out.println(s3==s4);
