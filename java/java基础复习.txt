@@ -1829,6 +1829,16 @@ abstract class Jeep extends Car{
 		StringBuffer sb1 = new StringBuffer(str);
 		System.out.println(sb1);
 
+集合
+	数组的特征
+		1.长度固定，一旦确定不可修改
+		2.类型限制，不可修改
+		
+	使用数组的缺点
+		1.数组长度固定，不可修改 
+		2.数组的方法api少，对数组的新增，删除，添加操作效率低
+		3.数组的长度方法也没有
+		4.数组连续的存储空间，有序且元素可以重复，如果无序且不可重复，则数组不满足该需求。
 
 		
 JVM
